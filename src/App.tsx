@@ -24,7 +24,7 @@ function App() {
     zoom
   } = useVirtualMe();
   const [isLoading, setIsLoading] = useState(true);
-
+  
   // Load data on mount
   useEffect(() => {
     const loadData = async () => {
@@ -41,7 +41,7 @@ function App() {
 
     loadData();
   }, [setRawData]);
-
+  
   // Handle context transition
   useEffect(() => {
     if (isTransitioning) {
@@ -51,7 +51,7 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [isTransitioning, setIsTransitioning]);
-
+  
   // Handle ESC key to exit zoom
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -63,7 +63,7 @@ function App() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [zoom.isZoomed]);
-
+  
   if (isLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-slate-950">
@@ -125,18 +125,14 @@ function App() {
           </div>
         </motion.header>
 
-        {/* Edit Toggle Button */}
+        {/* Control Buttons */}
         <EditToggle />
-
-        {/* Voice Recorder Button */}
         <VoiceRecorder />
-
-        {/* Music Player Toggle */}
         <MusicPlayer />
 
         {/* Main Orbit Layout */}
         <main className="flex-1 flex items-center justify-center relative">
-          <div className="relative w-[800px] h-[800px] flex items-center justify-center">
+          <div className="relative w-[1200px] h-[1200px] flex items-center justify-center">
             {/* Center Portrait */}
             <motion.div
               className="absolute z-20"
@@ -150,7 +146,7 @@ function App() {
               <CenterPortrait />
             </motion.div>
 
-            {/* Orbiting Clusters */}
+            {/* Orbiting Clusters - Increased spacing */}
             <AnimatePresence>
               {!zoom.isZoomed && (
                 <>
@@ -158,7 +154,7 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '80px',
+                      right: '180px',
                       top: '50%',
                       transform: 'translateY(-50%)'
                     }}
@@ -174,8 +170,8 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '200px',
-                      top: '120px'
+                      right: '320px',
+                      top: '180px'
                     }}
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -189,8 +185,8 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      left: '200px',
-                      top: '120px'
+                      left: '320px',
+                      top: '180px'
                     }}
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -204,8 +200,8 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '200px',
-                      bottom: '120px'
+                      right: '320px',
+                      bottom: '180px'
                     }}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -219,8 +215,8 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      left: '200px',
-                      bottom: '120px'
+                      left: '320px',
+                      bottom: '180px'
                     }}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -248,7 +244,7 @@ function App() {
                 </defs>
                 {/* Lines from center to clusters */}
                 <motion.line
-                  x1="400" y1="400" x2="680" y2="400"
+                  x1="600" y1="600" x2="980" y2="600"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -256,7 +252,7 @@ function App() {
                   transition={{ duration: 1, delay: 0.5 }}
                 />
                 <motion.line
-                  x1="400" y1="400" x2="580" y2="220"
+                  x1="600" y1="600" x2="820" y2="320"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -264,7 +260,7 @@ function App() {
                   transition={{ duration: 1, delay: 0.6 }}
                 />
                 <motion.line
-                  x1="400" y1="400" x2="220" y2="220"
+                  x1="600" y1="600" x2="380" y2="320"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -272,7 +268,7 @@ function App() {
                   transition={{ duration: 1, delay: 0.7 }}
                 />
                 <motion.line
-                  x1="400" y1="400" x2="580" y2="580"
+                  x1="600" y1="600" x2="820" y2="880"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -280,7 +276,7 @@ function App() {
                   transition={{ duration: 1, delay: 0.8 }}
                 />
                 <motion.line
-                  x1="400" y1="400" x2="220" y2="580"
+                  x1="600" y1="600" x2="380" y2="880"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
