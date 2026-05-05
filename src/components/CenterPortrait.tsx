@@ -1,8 +1,15 @@
 import { motion } from 'framer-motion';
 import { useVirtualMe } from '@/store/useVirtualMe';
+import { Camera } from 'lucide-react';
 
 export function CenterPortrait() {
-  const { activeContext, isTransitioning } = useVirtualMe();
+  const { activeContext, isTransitioning, userProfile, rawData, updateUserProfile, isEditMode } = useVirtualMe();
+  
+  
+  // Get name from either userProfile or rawData
+  const displayName = userProfile?.preferredName || rawData?.profile?.preferredName || rawData?.profile?.fullName || 'VirtualSelf';
+  const currentRole = rawData?.workExperience?.[0]?.title || '';
+  const avatarUrl = userProfile?.avatarUrl || '/avatar.jpg';
 
   // Ring colors based on context
   const getRingColors = () => {
@@ -35,6 +42,18 @@ export function CenterPortrait() {
   };
 
   const colors = getRingColors();
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateUserProfile({ avatarUrl: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+    // setIsEditingImage(false);
+  };
 
   return (
     <div className="relative flex items-center justify-center">
@@ -85,7 +104,7 @@ export function CenterPortrait() {
 
       {/* Portrait container */}
       <motion.div
-        className="relative w-[280px] h-[280px] rounded-full overflow-hidden"
+        className="relative w-[280px] h-[280px] rounded-full overflow-hidden group"
         animate={{
           boxShadow: isTransitioning
             ? [
@@ -107,14 +126,32 @@ export function CenterPortrait() {
       >
         {/* Portrait image */}
         <img
-          src="/avatar.jpg"
-          alt="Kyparissis"
+          src={avatarUrl}
+          alt={displayName}
           className="w-full h-full object-cover"
         />
 
+        {/* Edit overlay */}
+        {isEditMode && (
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <label className="cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              <div className="flex flex-col items-center gap-2 text-white">
+                <Camera className="w-8 h-8" />
+                <span className="text-xs">Change Photo</span>
+              </div>
+            </label>
+          </div>
+        )}
+
         {/* Holographic scan line */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/20 to-transparent"
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/20 to-transparent pointer-events-none"
           animate={{
             y: [-280, 280],
           }}
@@ -130,6 +167,19 @@ export function CenterPortrait() {
         <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-cyan-400/60" />
         <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-cyan-400/60" />
         <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-cyan-400/60" />
+      </motion.div>
+
+      {/* Name label below portrait */}
+      <motion.div
+        className="absolute -bottom-20 left-1/2 -translate-x-1/2 text-center"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <h2 className="text-2xl font-bold text-white tracking-wide">{displayName}</h2>
+        {currentRole && (
+          <p className="text-sm text-cyan-400/70 mt-1">{currentRole}</p>
+        )}
       </motion.div>
 
       {/* Orbiting particles */}
