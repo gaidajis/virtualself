@@ -1,13 +1,19 @@
 import { motion } from 'framer-motion';
 import { useVirtualMe } from '@/store/useVirtualMe';
 import type { ContextType } from '@/types';
-import { Globe, Heart, Briefcase, Lock } from 'lucide-react';
+import { Globe, Heart, Briefcase, Lock, Users, GraduationCap, BookOpen, Sparkles, Pencil, HelpCircle } from 'lucide-react';
 
 const contextIcons: Record<ContextType, React.ElementType> = {
   PUBLIC: Globe,
   DATING: Heart,
   WORK: Briefcase,
   PRIVATE: Lock,
+  FAMILY: Users,
+  STUDENT: GraduationCap,
+  MEMORY: BookOpen,
+  ANCESTRY: Sparkles,
+  EDIT: Pencil,
+  ZOOM_HELP: HelpCircle,
 };
 
 const contextColors: Record<ContextType, string> = {
@@ -15,6 +21,12 @@ const contextColors: Record<ContextType, string> = {
   DATING: 'from-pink-500 to-rose-500',
   WORK: 'from-blue-500 to-indigo-500',
   PRIVATE: 'from-violet-500 to-purple-500',
+  FAMILY: 'from-amber-500 to-orange-500',
+  STUDENT: 'from-emerald-500 to-green-500',
+  MEMORY: 'from-rose-500 to-red-500',
+  ANCESTRY: 'from-yellow-500 to-amber-500',
+  EDIT: 'from-slate-500 to-gray-500',
+  ZOOM_HELP: 'from-teal-500 to-cyan-500',
 };
 
 export function BottomNavigation() {
@@ -35,7 +47,7 @@ export function BottomNavigation() {
     setTimeout(() => setIsTransitioning(false), 500);
   };
 
-  const contexts: ContextType[] = ['PUBLIC', 'DATING', 'WORK', 'PRIVATE'];
+  const contexts: ContextType[] = ['PUBLIC', 'DATING', 'WORK', 'PRIVATE', 'FAMILY', 'STUDENT', 'MEMORY', 'ANCESTRY'];
 
   return (
     <motion.div

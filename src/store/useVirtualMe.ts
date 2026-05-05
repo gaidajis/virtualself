@@ -1,6 +1,33 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import type { ContextType, ClusterType, ParisData } from '@/types';
+import type { 
+  ContextType, 
+  ClusterType, 
+  ParisData, 
+  UserProfile, 
+  ConnectionEdge, 
+  PermissionGrant,
+  Memory,
+  TimelineEvent,
+  Place,
+  Project,
+  EducationRecord,
+  WorkRole,
+  Skill,
+  Relationship,
+  FamilyMember,
+  AncestryNode,
+  HealthMetric,
+  Goal,
+  Habit,
+  Narration,
+  Photo,
+  MediaAttachment,
+  Tag,
+  Revision,
+  EntityType,
+  PermissionScope
+} from '@/types';
 
 interface ZoomState {
   isZoomed: boolean;
@@ -8,6 +35,14 @@ interface ZoomState {
   zoomScale: number;
   zoomX: number;
   zoomY: number;
+}
+
+// Viewer context for permission-aware rendering
+interface ViewerContext {
+  viewerUserId: string | null; // null = public/unauthenticated
+  isAuthenticated: boolean;
+  connectionStatus?: 'none' | 'pending' | 'accepted' | 'declined';
+  grantedPermissions: PermissionScope[];
 }
 
 interface VirtualMeState {
@@ -19,10 +54,115 @@ interface VirtualMeState {
   activeCluster: ClusterType;
   setActiveCluster: (cluster: ClusterType) => void;
   
-  // Data
+  // User profile
+  userProfile: UserProfile | null;
+  setUserProfile: (profile: UserProfile) => void;
+  updateUserProfile: (updates: Partial<UserProfile>) => void;
+  
+  // Legacy data (for backward compatibility)
   rawData: ParisData | null;
   setRawData: (data: ParisData) => void;
   updateRawData: (updater: (data: ParisData) => void) => void;
+  
+  // Identity Graph Entities - New virtualself data model
+  memories: Memory[];
+  timelineEvents: TimelineEvent[];
+  places: Place[];
+  projects: Project[];
+  educationRecords: EducationRecord[];
+  workRoles: WorkRole[];
+  skills: Skill[];
+  relationships: Relationship[];
+  familyMembers: FamilyMember[];
+  ancestryNodes: AncestryNode[];
+  healthMetrics: HealthMetric[];
+  goals: Goal[];
+  habits: Habit[];
+  narrations: Narration[];
+  photos: Photo[];
+  mediaAttachments: MediaAttachment[];
+  tags: Tag[];
+  
+  // Entity CRUD operations
+  addMemory: (memory: Memory) => void;
+  updateMemory: (id: string, updates: Partial<Memory>) => void;
+  deleteMemory: (id: string) => void;
+  
+  addTimelineEvent: (event: TimelineEvent) => void;
+  updateTimelineEvent: (id: string, updates: Partial<TimelineEvent>) => void;
+  deleteTimelineEvent: (id: string) => void;
+  
+  addPlace: (place: Place) => void;
+  updatePlace: (id: string, updates: Partial<Place>) => void;
+  deletePlace: (id: string) => void;
+  
+  addProject: (project: Project) => void;
+  updateProject: (id: string, updates: Partial<Project>) => void;
+  deleteProject: (id: string) => void;
+  
+  addEducationRecord: (record: EducationRecord) => void;
+  updateEducationRecord: (id: string, updates: Partial<EducationRecord>) => void;
+  deleteEducationRecord: (id: string) => void;
+  
+  addWorkRole: (role: WorkRole) => void;
+  updateWorkRole: (id: string, updates: Partial<WorkRole>) => void;
+  deleteWorkRole: (id: string) => void;
+  
+  addSkill: (skill: Skill) => void;
+  updateSkill: (id: string, updates: Partial<Skill>) => void;
+  deleteSkill: (id: string) => void;
+  
+  addRelationship: (relationship: Relationship) => void;
+  updateRelationship: (id: string, updates: Partial<Relationship>) => void;
+  deleteRelationship: (id: string) => void;
+  
+  addFamilyMember: (member: FamilyMember) => void;
+  updateFamilyMember: (id: string, updates: Partial<FamilyMember>) => void;
+  deleteFamilyMember: (id: string) => void;
+  
+  addAncestryNode: (node: AncestryNode) => void;
+  updateAncestryNode: (id: string, updates: Partial<AncestryNode>) => void;
+  deleteAncestryNode: (id: string) => void;
+  
+  addHealthMetric: (metric: HealthMetric) => void;
+  updateHealthMetric: (id: string, updates: Partial<HealthMetric>) => void;
+  deleteHealthMetric: (id: string) => void;
+  
+  addGoal: (goal: Goal) => void;
+  updateGoal: (id: string, updates: Partial<Goal>) => void;
+  deleteGoal: (id: string) => void;
+  
+  addHabit: (habit: Habit) => void;
+  updateHabit: (id: string, updates: Partial<Habit>) => void;
+  deleteHabit: (id: string) => void;
+  
+  addNarration: (narration: Narration) => void;
+  updateNarration: (id: string, updates: Partial<Narration>) => void;
+  deleteNarration: (id: string) => void;
+  
+  addPhoto: (photo: Photo) => void;
+  updatePhoto: (id: string, updates: Partial<Photo>) => void;
+  deletePhoto: (id: string) => void;
+  
+  addTag: (tag: Tag) => void;
+  updateTag: (id: string, updates: Partial<Tag>) => void;
+  deleteTag: (id: string) => void;
+  
+  // Multi-user & Connections
+  connections: ConnectionEdge[];
+  permissionGrants: PermissionGrant[];
+  connectedProfiles: { userId: string; name: string; relationship: string; avatarUrl?: string }[];
+  
+  addConnection: (connection: ConnectionEdge) => void;
+  updateConnectionStatus: (connectionId: string, status: 'pending' | 'accepted' | 'declined' | 'revoked' | 'blocked') => void;
+  removeConnection: (connectionId: string) => void;
+  
+  grantPermission: (grant: PermissionGrant) => void;
+  revokePermission: (grantId: string) => void;
+  
+  // Viewer context
+  viewerContext: ViewerContext;
+  setViewerContext: (context: ViewerContext) => void;
   
   // UI State
   isPanelOpen: boolean;
@@ -69,9 +209,16 @@ interface VirtualMeState {
   clusterLabels: Record<string, string>;
   updateClusterLabel: (cluster: string, label: string) => void;
   
+  // Revisions history
+  revisions: Revision[];
+  addRevision: (revision: Revision) => void;
+  
   // Save/Export
   exportData: () => string;
   importData: (json: string) => void;
+  
+  // Filter utility - get filtered data based on context and permissions
+  getFilteredData: <T>(entities: T[], context: ContextType, requiredPermission?: PermissionScope) => T[];
 }
 
 const initialZoomState: ZoomState = {
