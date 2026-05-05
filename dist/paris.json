@@ -1,0 +1,389 @@
+{
+  "userId": "user_001",
+  "profile": {
+    "fullName": "Kyparissis Gkaintatzis",
+    "preferredName": "Kyparissis",
+    "dateOfBirth": "1985-04-17",
+    "placeOfBirth": {
+      "city": "Didymoteicho",
+      "country": "Greece"
+    },
+    "gender": "male",
+    "nationality": {
+      "mother": "Cypriot",
+      "father": "Greek"
+    },
+    "currentLocation": {
+      "city": "Bourg-en-Lavaux",
+      "canton": "Vaud",
+      "country": "Switzerland",
+      "sinceYear": 2018
+    },
+    "primaryLanguages": [
+      "Greek (native)",
+      "Cypriot Greek (native)",
+      "English (fluent)",
+      "French (fluent)"
+    ],
+    "learningLanguages": [
+      "German",
+      "Japanese"
+    ],
+    "contact": {
+      "email": null,
+      "phone": null,
+      "website": null
+    },
+    "onlineIdentities": {
+      "github": null,
+      "linkedin": null,
+      "twitter": null
+    }
+  },
+  "lifeTimeline": [
+    {
+      "period": "1985-1995",
+      "ageRange": "0-10",
+      "location": "Greece",
+      "summary": "Childhood in Greece before moving to Cyprus."
+    },
+    {
+      "period": "1995-2003",
+      "ageRange": "10-18",
+      "location": "Cyprus",
+      "summary": "Moved to Cyprus at around 10 years old and grew up there."
+    },
+    {
+      "period": "Early adulthood",
+      "location": "Cyprus",
+      "summary": "Studied physics for 3 years at the University of Cyprus."
+    },
+    {
+      "period": "7 months",
+      "location": "Cameroon",
+      "summary": "Lived and worked on a project in Cameroon for 7 months."
+    },
+    {
+      "period": "7 months",
+      "location": "Oslo, Norway",
+      "summary": "Lived in Oslo for 7 months."
+    },
+    {
+      "period": "4 years",
+      "location": "United States",
+      "summary": "Lived in the United States for around 4 years."
+    },
+    {
+      "period": "2018-present",
+      "location": "Switzerland (Vaud)",
+      "summary": "Living and working in Switzerland since 2018."
+    }
+  ],
+  "education": [
+    {
+      "level": "University (incomplete)",
+      "field": "Physics",
+      "institution": "University of Cyprus",
+      "country": "Cyprus",
+      "durationYears": 3,
+      "status": "studied for 3 years",
+      "notes": "Strong interest in physics, foundations, and scientific thinking."
+    }
+  ],
+  "workExperience": [
+    {
+      "title": "Program Manager IT – Digital Transformation",
+      "organization": "EHL University",
+      "industry": "Higher education / hospitality management",
+      "location": "Switzerland",
+      "startApproxYear": 2018,
+      "endApproxYear": null,
+      "responsibilities": [
+        "Leading digital transformation initiatives",
+        "Managing IT project managers and project directors",
+        "Coordinating multiple complex projects in parallel"
+      ],
+      "skillsUsed": [
+        "program management",
+        "IT project management",
+        "stakeholder management",
+        "strategy execution",
+        "budgeting",
+        "team leadership"
+      ]
+    }
+  ],
+  "skills": {
+    "domains": [
+      "IT program management",
+      "digital transformation",
+      "project portfolio management",
+      "renewable energy project structuring",
+      "basic trading (stocks, some crypto)",
+      "quantitative and scientific thinking (physics background)"
+    ],
+    "technical": [
+      "general IT architecture understanding",
+      "cloud / SaaS tools (incl. Google ecosystem)",
+      "basic data modeling (NoSQL / Firestore concepts)"
+    ],
+    "softSkills": [
+      "systems thinking",
+      "long-term strategic planning",
+      "cross-cultural communication",
+      "minimalist mindset and prioritization",
+      "continuous learning",
+      "curiosity-driven exploration"
+    ]
+  },
+  "interestsAndValues": {
+    "coreInterests": [
+      "scalable energy systems and portfolios",
+      "pico and small hydro projects in Switzerland",
+      "building passive income streams",
+      "stock trading and selective crypto exposure",
+      "physics and deep understanding of reality",
+      "healthy, balanced lifestyle and graceful ageing",
+      "minimalism and intentional living",
+      "Japanese culture and aesthetics",
+      "good music",
+      "world travel and exploration"
+    ],
+    "travel": {
+      "countriesVisitedCount": 50,
+      "notes": "Extensive travel across ~50 countries; enjoys learning from different cultures."
+    },
+    "values": [
+      "curiosity",
+      "scientific reasoning",
+      "autonomy and optionality",
+      "long-term compounding (financial and personal)",
+      "sustainability",
+      "simplicity and minimalism",
+      "health-span, not just lifespan"
+    ],
+    "lifestylePreferences": {
+      "aesthetic": [
+        "minimalist design",
+        "Japanese-inspired simplicity"
+      ],
+      "social": [
+        "deep, meaningful conversations",
+        "preference for signal over noise in social media"
+      ]
+    }
+  },
+  "healthAndPerformance": {
+    "goals": {
+      "exercise": "Maintain at least 150 Google Fit heart points per week.",
+      "bodyComposition": "Maintain healthy weight while preserving or increasing muscle mass with age.",
+      "nutrition": "Consistently eat a healthy, balanced diet.",
+      "sleep": "Sleep well and maintain high recovery quality.",
+      "ageing": "Age gracefully while preserving strength, cognition, and functional independence."
+    },
+    "concerns": [],
+    "habits": {
+      "movement": "General intent to stay active and measure activity with heart points or similar metrics.",
+      "mindset": "Ever-curious; sees health as a long-term systems project."
+    }
+  },
+  "relationships": {
+    "maritalStatus": "married",
+    "spouse": {
+      "fullName": "Anh-Thu Alice Kha",
+      "approxAge": 38,
+      "profession": "Asset Manager",
+      "employer": "Swiss Life",
+      "assetsUnderManagement": "≈3.5 billion (institutional asset management)",
+      "involvementInProjects": "Co-founder / partner in hydro portfolio and investment structure."
+    },
+    "family": {
+      "motherNationality": "Cypriot",
+      "fatherNationality": "Greek"
+    },
+    "socialIntent": {
+      "datingProfileUse": "Use selected parts of this data for transparent, high-signal dating-style introductions if ever needed.",
+      "professionalNetworkingUse": "Use curated work, project, and skills data for professional introductions and pitches."
+    }
+  },
+  "financeAndWorkstyle": {
+    "currentRole": "Program Manager IT (EHL University)",
+    "incomeSources": [
+      "salary from EHL University",
+      "stock trading",
+      "small crypto exposure"
+    ],
+    "goals": [
+      "build scalable, real-asset-based passive income",
+      "develop a portfolio of pico-hydro assets",
+      "design an energy-backed crypto (Joule) fully tied to kWh on the grid",
+      "eventually reduce dependence on salary while keeping interesting work"
+    ],
+    "riskAppetite": "Moderate, with preference for real assets and clear cash-flow models over pure speculation.",
+    "investmentThesisSummary": "Combine stable, regulated energy cash flows with optional upside layers (crypto, advanced products), while maintaining founder-aligned incentives and no initial founder capital where possible."
+  },
+  "learningAndRoadmap": {
+    "currentLearningFocus": [
+      "German language",
+      "Japanese language",
+      "CISSP certification preparation",
+      "Google Cloud / Firebase ecosystem",
+      "NoSQL data modeling for personal memory systems",
+      "small-hydro technical and regulatory landscape in Switzerland"
+    ],
+    "futureLearningIdeas": [
+      "energy markets and grid balancing in Switzerland and EU",
+      "token economics for energy-backed digital assets",
+      "multimodal AI (voice / text / image / video) for social and memory applications"
+    ],
+    "certificationsTargeted": [
+      "CISSP"
+    ]
+  },
+  "projects": {
+    "personalMemoryPlatform": {
+      "id": "self_memory_social",
+      "title": "Self Memory and Social Platform",
+      "goal": "Upload and organize selective 'consciousness' data (memories, preferences, life history) into a NoSQL backend with voice/text I/O and advanced search.",
+      "components": [
+        "NoSQL Firestore data model for self, memories, relationships, contexts",
+        "voice-to-text transcription of spoken memories",
+        "text-to-voice playback for recall and narration",
+        "semantic and contextual search over memories",
+        "selective sharing layers for work, dating, friendships, investors",
+        "future: purely visual / UI-first social layer with minimal or no raw text"
+      ],
+      "contexts": [
+        "personal",
+        "work",
+        "dating",
+        "energyBusiness",
+        "experimental/creative"
+      ],
+      "status": "design and initial data-seeding phase",
+      "notes": "This Firestore JSON is intended as the seed representation of personal identity and projects."
+    },
+    "hydroPortfolio": {
+      "id": "hydro_ch_500kw_portfolio",
+      "title": "Swiss Small / Pico-Hydro Portfolio",
+      "coreIdea": "Develop multiple small hydro installations (≈500 kW class) in Switzerland, ideally using existing infrastructure and distributed water systems, with 0 founder capital and long-term RCC-backed revenues.",
+      "businessModel": {
+        "revenueStreams": [
+          "regulated RCC feed-in tariffs for electricity sold to the Swiss grid",
+          "optional PPAs with communes or local utilities",
+          "optional crypto-mining or energy-backed tokenization layer (Joule)"
+        ],
+        "founderCompensation": {
+          "cashInvestment": 0,
+          "profitShareNet": 0.10,
+          "profitShareDuration": "lifetime while assets operate",
+          "roles": [
+            "program management",
+            "financing and stakeholder coordination",
+            "portfolio expansion and optimization"
+          ]
+        },
+        "capitalStructureExample": {
+          "singleSiteCapacityKW": 500,
+          "capexCHF": 2095000,
+          "debtToEquityRatio": "70/30",
+          "targetPaybackYearsPortfolio": 5,
+          "targetIRR": {
+            "min": 0.11,
+            "max": 0.18
+          }
+        }
+      },
+      "status": "feasibility and investor-pitch-ready; targeting banks, family offices, impact funds, and institutional investors.",
+      "documents": [
+        {
+          "type": "feasibilityStudy",
+          "title": "Plan de Faisabilité Commerciale Intégrée – Installations Hydroélectriques Petite Taille Suisse 500 kW",
+          "source": "local file i-want-a-business-feasibility-mBdHHJMRTBK3ngCp8OVcWA.md",
+          "validity": {
+            "preparedDateApprox": "2024-12-01",
+            "validUntilApprox": "2025-06-30"
+          }
+        }
+      ]
+    },
+    "jouleCrypto": {
+      "id": "joule_energy_token",
+      "concept": "Strictly energy-backed crypto-asset where each token corresponds to a verified unit of energy (e.g., 1 JOULE or 1 kWh) injected into the grid, with no other minting pathway.",
+      "designPrinciples": [
+        "physics-grounded value (energy, not speculation)",
+        "on-chain transparency of energy proofs",
+        "double validation with grid operator readings",
+        "tight coupling to real hydro and other renewable portfolios"
+      ],
+      "status": "conceptual and architecture phase; dependent on hydro portfolio / energy projects."
+    },
+    "visualLanguageAndSocial": {
+      "id": "visual_social_network",
+      "goal": "Create a social / communication platform where communication is primarily via compact images and videos encoding multiple concepts at once instead of plain text.",
+      "ideas": [
+        "design a visual grammar to compress many words into a single image",
+        "use video sequences as high-bandwidth communication (many concept-images per second)",
+        "UI-first, almost text-free social experience",
+        "integrate with personal memory platform as front-end to the NoSQL 'self' backend"
+      ],
+      "status": "vision and exploratory design; not yet implemented."
+    }
+  },
+  "memoryModel": {
+    "contexts": [
+      "personal",
+      "work",
+      "dating",
+      "family",
+      "friends",
+      "energyBusiness",
+      "finance",
+      "learning",
+      "health",
+      "travel",
+      "meta"
+    ],
+    "defaultVisibility": "private",
+    "sharingModes": [
+      "private (only self)",
+      "selective (whitelist of people / apps)",
+      "context-based (e.g., work vs dating profile slices)",
+      "public (rare, curated)"
+    ],
+    "searchPriorities": [
+      "time-based",
+      "context-based",
+      "emotion-based",
+      "project-based"
+    ]
+  },
+  "personalityModel": {
+    "selfDescription": [
+      "ever-curious minimalist",
+      "systems and comparison thinker (likes benchmarking and structuring)",
+      "scientifically oriented with strong physics intuition",
+      "interested in both hard-tech (energy, crypto, AI) and soft aspects (health, lifestyle, aesthetics)"
+    ],
+    "decisionStyle": "Compare options quantitatively when possible, but also consider aesthetics, simplicity, and long-term compounding.",
+    "socialEnergy": "Enjoys rich, information-dense communication more than high-volume, shallow social feeds."
+  },
+  "system": {
+    "createdAt": "2026-02-14T08:22:00Z",
+    "lastUpdated": "2026-02-21T13:11:00Z",
+    "sourceSummary": {
+      "chatHistoryUsed": true,
+      "uploadedHydroFeasibilityFileUsed": true,
+      "externalEmailOrDriveAccess": false
+    },
+    "intendedUse": [
+      "seed document for Firestore representation of self",
+      "starting point for AI-assisted querying and memory creation",
+      "basis for context-aware sharing to future apps"
+    ],
+    "privacyNotes": [
+      "does not contain private emails, explicit IDs, or passwords",
+      "designed to be extended with more detailed documents, events, and logs over time"
+    ]
+  }
+}
