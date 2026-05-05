@@ -18,47 +18,13 @@ export function BaseCluster({
   children,
   glowColor = 'rgba(100, 200, 255, 0.5)',
 }: BaseClusterProps) {
-  const { activeCluster, setActiveCluster, activeContext, zoom, setZoom } = useVirtualMe();
+  const { activeCluster, setActiveCluster, activeContext, selectedCluster, setSelectedCluster } = useVirtualMe();
   const isActive = activeCluster === type;
   const opacity = getClusterOpacity(type || '', activeContext);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    
-    // Calculate zoom position based on cluster type
-    let zoomX = 0;
-    let zoomY = 0;
-    
-    switch (type) {
-      case 'timeline':
-        zoomX = 400;
-        zoomY = 0;
-        break;
-      case 'music':
-        zoomX = 250;
-        zoomY = -200;
-        break;
-      case 'places':
-        zoomX = -250;
-        zoomY = -200;
-        break;
-      case 'expertise':
-        zoomX = 250;
-        zoomY = 200;
-        break;
-      case 'genealogy':
-        zoomX = -250;
-        zoomY = 200;
-        break;
-    }
-
-    setZoom({
-      isZoomed: true,
-      zoomTarget: type,
-      zoomScale: 1.8,
-      zoomX,
-      zoomY,
-    });
+    setSelectedCluster(type);
     setActiveCluster(type);
   };
 
@@ -66,21 +32,21 @@ export function BaseCluster({
     <motion.div
       className="relative"
       style={{ 
-        opacity: zoom.isZoomed && activeCluster !== type ? 0.2 : opacity,
-        pointerEvents: zoom.isZoomed && activeCluster !== type ? 'none' : 'auto',
+        opacity: selectedCluster && activeCluster !== type ? 0.2 : opacity,
+        pointerEvents: selectedCluster && activeCluster !== type ? 'none' : 'auto',
         zIndex: isActive ? 50 : 10,
       }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ 
-        scale: zoom.isZoomed && activeCluster !== type ? 0.6 : 1, 
-        opacity: zoom.isZoomed && activeCluster !== type ? 0.2 : opacity 
+        scale: selectedCluster && activeCluster !== type ? 0.6 : 1, 
+        opacity: selectedCluster && activeCluster !== type ? 0.2 : opacity 
       }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
       {/* Large invisible hit area for easier clicking */}
       <button
         onClick={handleClick}
-        className="absolute -inset-8 rounded-full cursor-pointer z-20"
+        className="absolute -inset-12 rounded-full cursor-pointer z-20"
         style={{ background: 'transparent' }}
         aria-label={`View ${label}`}
       />
@@ -103,7 +69,7 @@ export function BaseCluster({
       {/* Main cluster node - clickable */}
       <motion.button
         onClick={handleClick}
-        className={`relative w-24 h-24 rounded-full flex items-center justify-center backdrop-blur-md border-2 transition-all duration-300 ${
+        className={`relative w-28 h-28 rounded-full flex items-center justify-center backdrop-blur-md border-2 transition-all duration-300 ${
           isActive 
             ? 'bg-white/25 border-white/40 scale-110' 
             : 'bg-slate-900/70 border-white/30 hover:bg-slate-800/80 hover:border-white/50 hover:scale-105'
@@ -122,7 +88,7 @@ export function BaseCluster({
         
         {/* Inner ring animation */}
         <motion.div
-          className="absolute inset-2 rounded-full border border-white/20"
+          className="absolute inset-3 rounded-full border border-white/20"
           animate={{ rotate: 360 }}
           transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
         />

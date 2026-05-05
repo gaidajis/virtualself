@@ -49,9 +49,11 @@ interface VirtualMeState {
   activeContext: ContextType;
   setActiveContext: (context: ContextType) => void;
   
-  // Active cluster for detail panel
-  activeCluster: ClusterType;
-  setActiveCluster: (cluster: ClusterType) => void;
+  // Selected cluster for detail panel
+  selectedCluster: ClusterType | null;
+  setSelectedCluster: (cluster: ClusterType | null) => void;
+  activeCluster: ClusterType | null;
+  setActiveCluster: (cluster: ClusterType | null) => void;
   
   // User profile
   userProfile: UserProfile | null;
@@ -255,7 +257,9 @@ export const useVirtualMe = create<VirtualMeState>()(
     activeContext: 'PUBLIC',
     setActiveContext: (context) => set({ activeContext: context, isTransitioning: true }),
     
-    // Active cluster for detail panel
+    // Selected cluster for detail panel
+    selectedCluster: null,
+    setSelectedCluster: (cluster) => set({ selectedCluster: cluster }),
     activeCluster: null,
     setActiveCluster: (cluster) => set({ activeCluster: cluster }),
     
@@ -481,7 +485,7 @@ export const useVirtualMe = create<VirtualMeState>()(
     // Zoom state
     zoom: initialZoomState,
     setZoom: (zoom) => set((state) => ({ zoom: { ...state.zoom, ...zoom } })),
-    resetZoom: () => set({ zoom: initialZoomState, activeCluster: null }),
+    resetZoom: () => set({ zoom: initialZoomState, activeCluster: null, selectedCluster: null }),
     
     // Music state
     isMusicPlaying: false,

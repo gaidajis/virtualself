@@ -9,14 +9,14 @@ import { ExpertiseView } from './panels/ExpertiseView';
 import { GenealogyView } from './panels/GenealogyView';
 
 export function DetailPanel() {
-  const { activeCluster, setActiveCluster, isPanelOpen, rawData, activeContext } = useVirtualMe();
+  const { selectedCluster, setSelectedCluster, rawData, activeContext, isEditMode } = useVirtualMe();
 
   const handleClose = () => {
-    setActiveCluster(null);
+    setSelectedCluster(null);
   };
 
   const getPanelTitle = () => {
-    switch (activeCluster) {
+    switch (selectedCluster) {
       case 'timeline':
         return 'Life Timeline';
       case 'music':
@@ -36,13 +36,13 @@ export function DetailPanel() {
     if (!rawData) return null;
     const filteredData = getFilteredData(rawData, activeContext);
 
-    switch (activeCluster) {
+    switch (selectedCluster) {
       case 'timeline':
-        return <TimelineView data={filteredData.timeline} />;
+        return <TimelineView data={filteredData.timeline} isEditMode={isEditMode} />;
       case 'music':
-        return <InterestsView data={filteredData.interests} health={filteredData.health} />;
+        return <InterestsView data={filteredData.interests} health={filteredData.health} isEditMode={isEditMode} />;
       case 'places':
-        return <PlacesView data={rawData.interestsAndValues.travel} timeline={rawData.lifeTimeline} />;
+        return <PlacesView data={rawData.interestsAndValues.travel} timeline={rawData.lifeTimeline} isEditMode={isEditMode} />;
       case 'expertise':
         return (
           <ExpertiseView
@@ -51,6 +51,7 @@ export function DetailPanel() {
             skills={filteredData.skills}
             projects={filteredData.projects}
             finance={filteredData.finance}
+            isEditMode={isEditMode}
           />
         );
       case 'genealogy':
@@ -58,6 +59,7 @@ export function DetailPanel() {
           <GenealogyView
             profile={filteredData.profile}
             relationships={filteredData.relationships}
+            isEditMode={isEditMode}
           />
         );
       default:
@@ -69,7 +71,7 @@ export function DetailPanel() {
 
   return (
     <AnimatePresence>
-      {isPanelOpen && activeCluster && (
+      {selectedCluster && (
         <>
           {/* Backdrop */}
           <motion.div
@@ -82,39 +84,42 @@ export function DetailPanel() {
 
           {/* Panel */}
           <motion.div
-            className="fixed right-0 top-0 h-full w-full max-w-xl z-50 bg-slate-900/80 backdrop-blur-2xl border-l border-white/10 shadow-2xl overflow-hidden"
+            className="fixed right-0 top-0 h-full w-full max-w-2xl z-50 bg-slate-900/80 backdrop-blur-2xl border-l border-white/10 shadow-2xl overflow-hidden"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/10">
-              <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between p-8 border-b border-white/10">
+              <div className="flex items-center gap-4">
                 {isPrivate ? (
-                  <Unlock className="w-5 h-5 text-violet-400" />
+                  <Unlock className="w-6 h-6 text-violet-400" />
                 ) : (
-                  <Lock className="w-5 h-5 text-white/40" />
+                  <Lock className="w-6 h-6 text-white/40" />
                 )}
-                <h2 className="text-xl font-semibold text-white tracking-wide">
-                  {getPanelTitle()}
-                </h2>
+                <div>
+                  <h2 className="text-2xl font-semibold text-white tracking-wide">
+                    {getPanelTitle()}
+                  </h2>
+                  <p className="text-sm text-white/40 mt-1">Click ESC or backdrop to close</p>
+                </div>
               </div>
               <motion.button
                 onClick={handleClose}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                className="p-3 rounded-xl hover:bg-white/10 transition-colors"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <X className="w-5 h-5 text-white/60" />
+                <X className="w-6 h-6 text-white/60" />
               </motion.button>
             </div>
 
             {/* Content */}
-            <div className="p-6 overflow-y-auto h-[calc(100%-80px)] custom-scrollbar">
+            <div className="p-8 overflow-y-auto h-[calc(100%-100px)] custom-scrollbar">
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={activeCluster + activeContext}
+                  key={selectedCluster + activeContext}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}

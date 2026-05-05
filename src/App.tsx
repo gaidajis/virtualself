@@ -8,10 +8,10 @@ import { PlacesCluster } from '@/components/clusters/PlacesCluster';
 import { ExpertiseCluster } from '@/components/clusters/ExpertiseCluster';
 import { GenealogyCluster } from '@/components/clusters/GenealogyCluster';
 import { BottomNavigation } from '@/components/BottomNavigation';
-import { ZoomView } from '@/components/ZoomView';
 import { VoiceRecorder } from '@/components/VoiceRecorder';
 import { MusicPlayer } from '@/components/MusicPlayer';
 import { EditToggle } from '@/components/EditToggle';
+import { DetailPanel } from '@/components/DetailPanel';
 import { useVirtualMe } from '@/store/useVirtualMe';
 import type { ParisData } from '@/types';
 
@@ -19,9 +19,10 @@ function App() {
   const { 
     setRawData, 
     activeContext, 
-    isTransitioning, 
+    isTransitioning,
     setIsTransitioning,
-    zoom
+    selectedCluster,
+    setSelectedCluster
   } = useVirtualMe();
   const [isLoading, setIsLoading] = useState(true);
   
@@ -52,17 +53,17 @@ function App() {
     }
   }, [isTransitioning, setIsTransitioning]);
   
-  // Handle ESC key to exit zoom
+  // Handle ESC key to close panel
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && zoom.isZoomed) {
-        useVirtualMe.getState().resetZoom();
+      if (e.key === 'Escape' && selectedCluster) {
+        setSelectedCluster(null);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [zoom.isZoomed]);
+  }, [selectedCluster, setSelectedCluster]);
   
   if (isLoading) {
     return (
@@ -90,30 +91,30 @@ function App() {
 
       {/* Main Content */}
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Header */}
+        {/* Header - Clean layout with proper spacing */}
         <motion.header
-          className="fixed top-0 left-0 right-0 z-30 p-6"
+          className="fixed top-0 left-0 right-0 z-30 p-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between max-w-7xl mx-auto">
             <motion.div
-              className="flex items-center gap-3"
+              className="flex items-center gap-4"
               whileHover={{ scale: 1.02 }}
             >
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                <span className="text-white font-bold text-lg">V</span>
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                <span className="text-white font-bold text-xl">V</span>
               </div>
               <div>
-                <h1 className="text-white font-semibold text-lg">VirtualMe</h1>
-                <p className="text-white/40 text-xs">Holographic Profile Interface</p>
+                <h1 className="text-white font-semibold text-xl">VirtualMe</h1>
+                <p className="text-white/40 text-xs">Living Identity Graph</p>
               </div>
             </motion.div>
 
             {/* Context indicator */}
             <motion.div
-              className="px-4 py-2 rounded-full bg-slate-800/80 backdrop-blur-md border border-white/10"
+              className="px-5 py-2.5 rounded-full bg-slate-800/80 backdrop-blur-md border border-white/10"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
@@ -125,20 +126,22 @@ function App() {
           </div>
         </motion.header>
 
-        {/* Control Buttons */}
-        <EditToggle />
-        <VoiceRecorder />
-        <MusicPlayer />
+        {/* Control Buttons - Positioned with proper spacing */}
+        <div className="fixed top-8 right-8 z-30 flex flex-col gap-4">
+          <EditToggle />
+          <VoiceRecorder />
+          <MusicPlayer />
+        </div>
 
         {/* Main Orbit Layout */}
         <main className="flex-1 flex items-center justify-center relative">
-          <div className="relative w-[1200px] h-[1200px] flex items-center justify-center">
+          <div className="relative w-[1400px] h-[1400px] flex items-center justify-center">
             {/* Center Portrait */}
             <motion.div
               className="absolute z-20"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ 
-                scale: zoom.isZoomed ? 0.7 : 1, 
+                scale: selectedCluster ? 0.8 : 1, 
                 opacity: 1 
               }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -148,13 +151,13 @@ function App() {
 
             {/* Orbiting Clusters - Increased spacing */}
             <AnimatePresence>
-              {!zoom.isZoomed && (
+              {!selectedCluster && (
                 <>
                   {/* Timeline - Right */}
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '180px',
+                      right: '280px',
                       top: '50%',
                       transform: 'translateY(-50%)'
                     }}
@@ -170,8 +173,8 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '320px',
-                      top: '180px'
+                      right: '420px',
+                      top: '280px'
                     }}
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -185,8 +188,8 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      left: '320px',
-                      top: '180px'
+                      left: '420px',
+                      top: '280px'
                     }}
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -200,8 +203,8 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '320px',
-                      bottom: '180px'
+                      right: '420px',
+                      bottom: '280px'
                     }}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -215,8 +218,8 @@ function App() {
                   <motion.div
                     className="absolute"
                     style={{ 
-                      left: '320px',
-                      bottom: '180px'
+                      left: '420px',
+                      bottom: '280px'
                     }}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -230,7 +233,7 @@ function App() {
             </AnimatePresence>
 
             {/* Connection Lines (decorative) */}
-            {!zoom.isZoomed && (
+            {!selectedCluster && (
               <svg
                 className="absolute inset-0 w-full h-full pointer-events-none"
                 style={{ zIndex: 5 }}
@@ -244,7 +247,7 @@ function App() {
                 </defs>
                 {/* Lines from center to clusters */}
                 <motion.line
-                  x1="600" y1="600" x2="980" y2="600"
+                  x1="700" y1="700" x2="1080" y2="700"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -252,7 +255,7 @@ function App() {
                   transition={{ duration: 1, delay: 0.5 }}
                 />
                 <motion.line
-                  x1="600" y1="600" x2="820" y2="320"
+                  x1="700" y1="700" x2="920" y2="420"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -260,7 +263,7 @@ function App() {
                   transition={{ duration: 1, delay: 0.6 }}
                 />
                 <motion.line
-                  x1="600" y1="600" x2="380" y2="320"
+                  x1="700" y1="700" x2="480" y2="420"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -268,7 +271,7 @@ function App() {
                   transition={{ duration: 1, delay: 0.7 }}
                 />
                 <motion.line
-                  x1="600" y1="600" x2="820" y2="880"
+                  x1="700" y1="700" x2="920" y2="980"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -276,7 +279,7 @@ function App() {
                   transition={{ duration: 1, delay: 0.8 }}
                 />
                 <motion.line
-                  x1="600" y1="600" x2="380" y2="880"
+                  x1="700" y1="700" x2="480" y2="980"
                   stroke="url(#lineGrad)"
                   strokeWidth="1"
                   initial={{ pathLength: 0 }}
@@ -294,8 +297,8 @@ function App() {
         </footer>
       </div>
 
-      {/* Zoom View Overlay */}
-      <ZoomView />
+      {/* Detail Panel Overlay */}
+      <DetailPanel />
     </div>
   );
 }
