@@ -1,0 +1,187 @@
+{
+  "userId": "kyparissis_gkaintatzis",
+  "profileVersion": "3.1.0",
+  "generatedAt": "2026-04-29T04:27:00+02:00",
+  "profileType": "master_identity_graph",
+  "profileStatus": "living_document",
+  "owner": {
+    "fullName": "Kyparissis Gkaintatzis",
+    "preferredName": "Kyparissis",
+    "displayNameOptions": ["Kyparissis Gkaintatzis", "Kyparissis", "K. Gkaintatzis"],
+    "dateOfBirth": "1985-04-17",
+    "placeOfBirth": {
+      "city": "Didymoteicho",
+      "country": "Greece",
+      "confidence": "high"
+    },
+    "ancestry": {
+      "motherNationality": "Cypriot",
+      "fatherNationality": "Greek",
+      "heritageSummary": "Greek-Cypriot family background with bicultural identity formation."
+    },
+    "citizenship": {
+      "passports": ["Greek", "Swiss"]
+    },
+    "currentResidence": {
+      "locationLabel": "Grandvaux, Switzerland",
+      "country": "Switzerland",
+      "locality": "Grandvaux",
+      "sinceApprox": "2018"
+    },
+    "bodyMetrics": {
+      "weightKg": 90
+    },
+    "identityNarrative": {
+      "short": "Multilingual Greek-Cypriot Swiss-based digital transformation leader, systems thinker, builder, and ever-curious minimalist.",
+      "extended": "A cross-cultural, strategically minded technology leader who combines enterprise-scale digital transformation work with deep curiosity about health, consciousness, systems design, finance, and long-range life architecture."
+    },
+    "avatarUrl": "/avatar.jpg"
+  },
+  "relationshipProfile": {
+    "currentPartner": {
+      "name": "Aris",
+      "nationality": "Swiss",
+      "relationshipState": "partnered; active wedding planning context"
+    },
+    "weddingSignals": {
+      "weddingPlannerActive": true,
+      "plannerStatus": "all proposals recently approved",
+      "sleepArrangementIntent": "separate bedroom planned for Aris during marriage",
+      "reasoning": ["protect sleep quality", "partner snores", "partner talks in sleep"]
+    }
+  },
+  "professionalIdentity": {
+    "currentPrimaryRole": "Digital Transformation Lead",
+    "currentOrganization": "EHL in Lausanne",
+    "roleSummary": "IT project manager handling strategic projects and interacting directly with the CEO.",
+    "platformOwnership": ["Dynamics 365 Finance and Operations", "Swiss Salary on Business Central"],
+    "scope": {
+      "applicationsManaged": 205,
+      "responsibilities": ["vendor relations", "interface oversight", "dashboard-based monitoring", "system health monitoring", "security compliance tracking"]
+    },
+    "workPattern": {
+      "currentMode": "full-time",
+      "hoursPerDay": 8,
+      "vacationWeeksPerYear": 7
+    }
+  },
+  "educationAndIntellectualFormation": {
+    "formalEducation": [
+      {
+        "institution": "University of Cyprus",
+        "field": "Physics",
+        "durationYears": 3,
+        "status": "studied for 3 years"
+      }
+    ]
+  },
+  "languagesAndCulture": {
+    "languageSignals": {
+      "knownOrUsed": ["Greek", "English", "French"],
+      "learningFocus": ["German", "Japanese"]
+    },
+    "culturalIdentity": {
+      "rootCultures": ["Greek", "Cypriot", "Swiss-resident"]
+    }
+  },
+  "lifeTimeline": [
+    {"id": "phase_001", "period": "1985-1995", "ageRange": "0-10", "location": "Didymoteicho / Greece", "summary": "Born in Didymoteicho and spent early childhood in Greece."},
+    {"id": "phase_002", "period": "circa 1995 onward", "ageRange": "about 10+", "location": "Cyprus", "summary": "Moved to Cyprus around age 10 and grew up there."},
+    {"id": "phase_003", "period": "early adulthood", "location": "Cyprus", "summary": "Studied Physics at the University of Cyprus for roughly 3 years."},
+    {"id": "phase_004", "period": "historical", "location": "Cameroon", "summary": "Lived and worked on a project in Cameroon for about 7 months."},
+    {"id": "phase_005", "period": "historical", "location": "Oslo, Norway", "summary": "Lived in Oslo for about 7 months."},
+    {"id": "phase_006", "period": "historical", "location": "United States", "summary": "Lived in the United States for around 4 years."},
+    {"id": "phase_007", "period": "2018-present", "location": "Switzerland", "summary": "Living and working in Switzerland since 2018, now in Grandvaux."}
+  ],
+  "skillsGraph": {
+    "executiveAndDelivery": ["digital transformation leadership", "program management", "IT project management", "product ownership", "stakeholder management", "vendor management"],
+    "enterprisePlatforms": ["Dynamics 365 Finance and Operations", "Business Central", "Swiss Salary"],
+    "architectureAndOperations": ["application landscape oversight", "interface mapping", "dashboard-based system monitoring", "security/compliance visibility"],
+    "builderSkills": ["product concept design", "platform thinking", "backend schema thinking", "NoSQL / memory graph modeling"],
+    "metaSkills": ["comparison-based analysis", "first-principles reasoning", "synthesis across technical and personal systems", "long-horizon planning"]
+  },
+  "projectsAndRepositories": {
+    "github": {
+      "username": "gaidajis",
+      "repositories": [
+        {"name": "ludicqwen", "url": "https://github.com/gaidajis/ludicqwen", "notes": "WordPress as CMS backend"},
+        {"name": "ludicpreplexity", "url": "https://github.com/gaidajis/ludicpreplexity", "notes": "LUCID app project"},
+        {"id": "lucidkimi", "url": "https://github.com/gaidajis/lucidkimi", "notes": "LUCID-related repository"}
+      ]
+    },
+    "platformConcepts": [
+      {"id": "the_mission", "title": "The Mission", "type": "global platform concept", "summary": "A globally scalable platform focused on matching requesters and providers."},
+      {"id": "virtual_me", "title": "VirtualMe", "type": "identity graph + cinematic interface", "summary": "A spatial, context-aware interface that filters identity data."},
+      {"id": "self_memory_platform", "title": "Personal Memory System", "type": "knowledge graph / memory OS", "summary": "A structured self-representation system for selective retrieval."}
+    ]
+  },
+  "healthPerformanceAndBody": {
+    "healthOrientation": "long-term systems approach to healthspan, recovery, weight management, and sustainable aging",
+    "activeConcerns": ["blood sugar normalization", "sleep quality", "maintaining healthy weight", "preserving muscle mass"],
+    "goals": ["healthy balanced eating", "sleep well", "age gracefully", "maintain strength and cognition", "150 heart points per week"]
+  },
+  "interestsMap": {
+    "coreInterests": ["digital transformation", "enterprise systems", "AI and LLM comparison", "memory systems", "physics", "consciousness", "health optimization", "music", "minimalism", "travel", "finance", "energy concepts"],
+    "spiritualAndConsciousnessSignals": {
+      "documentLibrary": ["Kundalini Tantra - Swami Satyananda Saraswati", "Wheels of Life - Anodea Judith", "Ancient Secrets of Kundalini - Gopi Krishna", "Riddle of Consciousness - Gopi Krishna"]
+    },
+    "travelSignals": {
+      "countriesVisitedApprox": 50,
+      "notablePlaceInterests": ["Glacier 3000", "Davos-St. Moritz", "Puy-de-Dome, France"]
+    },
+    "entertainmentSignals": {
+      "seriesAndMedia": ["His Dark Materials", "The Dark Crystal", "Penny Dreadful", "Doom Patrol", "From", "Neuromancer"],
+      "gamingAndVR": ["Apex", "Asgard's Wrath", "Hubris", "Into the Radius", "Hellblade", "Lone Echo", "Vader Immortal"]
+    }
+  },
+  "mediaAndMusic": {
+    "favoriteArtists": ["Pink Floyd", "Led Zeppelin", "David Bowie", "Radiohead", "Massive Attack"],
+    "favoriteAlbums": [
+      {"title": "Dark Side of the Moon", "artist": "Pink Floyd", "spotifyUri": "spotify:album:4LH4d3cOWNNsVw41Gqt2kv"},
+      {"title": "IV", "artist": "Led Zeppelin", "spotifyUri": "spotify:album:44Ig8dzqOkvkGDzaUof2lK"},
+      {"title": "OK Computer", "artist": "Radiohead", "spotifyUri": "spotify:album:6dVIqQ8qmQ5GBnJ9shOYGE"}
+    ],
+    "playlists": [
+      {"name": "Deep Focus", "spotifyUri": "spotify:playlist:37i9dQZF1DWZeKCadgRdKQ"},
+      {"name": "Ambient Relaxation", "spotifyUri": "spotify:playlist:37i9dQZF1DWZqd5JICZI0u"}
+    ]
+  },
+  "photos": {
+    "galleries": [
+      {
+        "id": "travel",
+        "name": "Travel Memories",
+        "images": [
+          {"url": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800", "caption": "Swiss Alps adventure", "location": "Switzerland", "date": "2023"},
+          {"url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800", "caption": "Mediterranean sunset", "location": "Cyprus", "date": "2010"},
+          {"url": "https://images.unsplash.com/photo-1518684079-3c830dcef6da?w=800", "caption": "Desert exploration", "location": "Cameroon", "date": "2012"}
+        ]
+      },
+      {
+        "id": "personal",
+        "name": "Personal Moments",
+        "images": [
+          {"url": "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800", "caption": "Family gathering", "location": "Greece", "date": "2019"},
+          {"url": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800", "caption": "Friends in Oslo", "location": "Norway", "date": "2013"}
+        ]
+      }
+    ]
+  },
+  "locations": {
+    "residences": [
+      {"city": "Didymoteicho", "country": "Greece", "lat": 41.3569, "lng": 26.5119, "period": "1985-1995", "type": "birthplace"},
+      {"city": "Nicosia", "country": "Cyprus", "lat": 35.1856, "lng": 33.3823, "period": "1995-2008", "type": "childhood_home"},
+      {"city": "Yaoundé", "country": "Cameroon", "lat": 3.8480, "lng": 11.5021, "period": "2009", "type": "work_project"},
+      {"city": "Oslo", "country": "Norway", "lat": 59.9139, "lng": 10.7522, "period": "2010", "type": "work_project"},
+      {"city": "Boston", "country": "United States", "lat": 42.3601, "lng": -71.0589, "period": "2011-2015", "type": "work"},
+      {"city": "Grandvaux", "country": "Switzerland", "lat": 46.5083, "lng": 6.8333, "period": "2018-present", "type": "current_home"}
+    ]
+  },
+  "valuesAndMotivations": {
+    "coreValues": ["curiosity", "autonomy", "clarity", "healthspan", "structural elegance", "meaningful challenge", "freedom", "high-signal environments"],
+    "motivationModel": {
+      "positiveContributors": ["ownership of time", "ownership of space", "money as optionality", "music", "mental challenge", "cleanliness", "food quality", "good tools"],
+      "overallGoal": "Increase happiness through structural optimization"
+    }
+  }
+}
