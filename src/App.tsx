@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ParticleBackground } from '@/components/ParticleBackground';
-import { CenterPortrait } from '@/components/CenterPortrait';
-import { TimelineCluster } from '@/components/clusters/TimelineCluster';
-import { InterestsCluster } from '@/components/clusters/InterestsCluster';
-import { PlacesCluster } from '@/components/clusters/PlacesCluster';
-import { ExpertiseCluster } from '@/components/clusters/ExpertiseCluster';
-import { GenealogyCluster } from '@/components/clusters/GenealogyCluster';
-import { ClusterModal } from '@/components/ClusterModal';
-import { useVirtualMe } from '@/store/useVirtualMe';
+import { ParticleBackground } from './components/ParticleBackground';
+import { CenterPortrait } from './components/CenterPortrait';
+import { TimelineCluster } from './components/clusters/TimelineCluster';
+import { InterestsCluster } from './components/clusters/InterestsCluster';
+import { PlacesCluster } from './components/clusters/PlacesCluster';
+import { ExpertiseCluster } from './components/clusters/ExpertiseCluster';
+import { GenealogyCluster } from './components/clusters/GenealogyCluster';
+import { ClusterModal } from './components/ClusterModal';
+import { useVirtualMe } from './store/useVirtualMe';
 
 function App() {
   const { setProfileData, isLoading, setIsLoading } = useVirtualMe();

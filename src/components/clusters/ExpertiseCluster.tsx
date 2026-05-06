@@ -1,5 +1,5 @@
-import { useVirtualMe } from '@/store/useVirtualMe';
-import { BaseCluster } from '../ui/BaseCluster';
+import { useVirtualMe } from '../../store/useVirtualMe';
+import { BaseCluster } from '../BaseCluster';
 
 export function ExpertiseCluster() {
   const { setSelectedCluster, profileData } = useVirtualMe();

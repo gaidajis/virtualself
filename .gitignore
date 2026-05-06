@@ -2,14 +2,15 @@
 # Build artifacts
 dist/
 build/
-*.js
-*.ts
-*.tsx
 
 # Dependencies
 node_modules/
 
-# Environment variables
+# Logs and temp files
+*.log
+*.tmp
+
+# Environment
 .env
 .env.local
 *.env.*
@@ -18,19 +19,7 @@ node_modules/
 .vscode/
 .idea/
 
-# Logs
-*.log
-
-# Temporary files
-*.tmp
-*.swp
-*.swo
-
-# OS specific
-.DS_Store
-Thumbs.db
-
-# Python (if present)
+# Python
 __pycache__/
 *.pyc
 *.pyo
@@ -50,13 +39,17 @@ coverage/
 htmlcov/
 .coverage
 
-# Testing
+# MyPy
 .mypy_cache/
+
+# Pytest
 .pytest_cache/
 
-# Java/Gradle
-target/
+# Gradle
 .gradle/
+
+# Target (Rust, etc.)
+target/
 
 # Compressed files
 *.zip

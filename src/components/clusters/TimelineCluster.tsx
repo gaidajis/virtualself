@@ -1,5 +1,5 @@
 import { useVirtualMe } from '@/store/useVirtualMe';
-import { BaseCluster } from '../ui/BaseCluster';
+import { BaseCluster } from '../BaseCluster';
 
 export function TimelineCluster() {
   const { setSelectedCluster, profileData } = useVirtualMe();
