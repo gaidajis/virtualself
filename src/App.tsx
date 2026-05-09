@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Brain, MessageSquare } from 'lucide-react';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { VoiceRecorder } from '@/components/VoiceRecorder';
 import { EditToggle } from '@/components/EditToggle';
 import { JsonViewer } from '@/components/JsonViewer';
+import { ConsciousnessViewer } from '@/components/ConsciousnessViewer';
 import { useVirtualMe } from '@/store/useVirtualMe';
 import type { ParisData } from '@/types';
 
@@ -15,6 +17,7 @@ function App() {
     setIsTransitioning
   } = useVirtualMe();
   const [isLoading, setIsLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'consciousness' | 'json'>('consciousness');
   
   // Load data on mount
   useEffect(() => {
@@ -97,12 +100,52 @@ function App() {
         </motion.header>
 
         {/* Main Content Area */}
-        <main className="flex-1 w-full flex justify-center items-start overflow-hidden pt-4 pb-12">
+        <main className="flex-1 w-full flex justify-center items-start overflow-hidden pt-4 pb-12 relative">
           {rawData ? (
-            <JsonViewer data={rawData} />
+            viewMode === 'consciousness' ? (
+              <ConsciousnessViewer data={rawData} />
+            ) : (
+              <JsonViewer data={rawData} />
+            )
           ) : (
             <div className="text-white/50">No data available</div>
           )}
+          
+          {/* View Mode Toggle */}
+          <motion.div 
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-center gap-2 p-2 rounded-2xl bg-slate-800/80 backdrop-blur-md border border-white/20">
+              <button
+                onClick={() => setViewMode('consciousness')}
+                className={`px-6 py-3 rounded-xl font-medium text-sm transition-all ${
+                  viewMode === 'consciousness'
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
+                    : 'text-white/60 hover:text-white'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <Brain className="w-4 h-4" />
+                  Consciousness
+                </span>
+              </button>
+              <button
+                onClick={() => setViewMode('json')}
+                className={`px-6 py-3 rounded-xl font-medium text-sm transition-all ${
+                  viewMode === 'json'
+                    ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
+                    : 'text-white/60 hover:text-white'
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  JSON View
+                </span>
+              </button>
+            </div>
+          </motion.div>
         </main>
       </div>
     </div>

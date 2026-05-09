@@ -765,6 +765,11 @@ export interface ParisData {
     futureLearningIdeas: string[];
     certificationsTargeted: string[];
   };
+  personalityModel?: {
+    selfDescription: string[];
+    decisionStyle: string;
+    socialEnergy: string;
+  };
 }
 
 // Filtered data structure for each context
