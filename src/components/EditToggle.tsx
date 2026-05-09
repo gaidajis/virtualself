@@ -36,16 +36,16 @@ export function EditToggle() {
 
   return (
     <motion.div
-      className="fixed top-24 right-8 z-50"
+      className="fixed top-24 right-8 z-40"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.5 }}
     >
       <div className="relative">
-        {/* Main Edit Button */}
+        {/* Main Edit Button - Compact */}
         <motion.button
           onClick={() => toggleEditMode()}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl font-medium text-sm transition-all ${
             isEditMode
               ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
               : 'bg-slate-800/80 backdrop-blur-md border border-white/20 text-white/70 hover:text-white hover:bg-slate-700/80'
@@ -54,15 +54,9 @@ export function EditToggle() {
           whileTap={{ scale: 0.95 }}
         >
           {isEditMode ? (
-            <>
-              <Save className="w-4 h-4" />
-              <span>Done Editing</span>
-            </>
+            <Save className="w-4 h-4" />
           ) : (
-            <>
-              <Pencil className="w-4 h-4" />
-              <span>Edit</span>
-            </>
+            <Pencil className="w-4 h-4" />
           )}
         </motion.button>
 
@@ -73,9 +67,6 @@ export function EditToggle() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="text-xs text-white/40 uppercase tracking-wider px-2 py-1 mb-1">
-              Data Management
-            </div>
             <button
               onClick={handleExport}
               className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-white/70 hover:bg-white/10 hover:text-white transition-colors text-left"
@@ -93,17 +84,11 @@ export function EditToggle() {
           </motion.div>
         )}
 
-        {/* Edit Mode Indicator */}
-        {isEditMode && (
-          <motion.div
-            className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <span className="px-3 py-1 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 text-xs font-medium animate-pulse">
-              EDIT MODE ACTIVE
-            </span>
-          </motion.div>
+        {/* Tooltip */}
+        {!isEditMode && (
+          <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-slate-800 text-white/70 text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            Edit Profile
+          </div>
         )}
       </div>
     </motion.div>
