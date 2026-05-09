@@ -174,7 +174,7 @@ export function VoiceRecorder() {
     <>
       {/* Floating Recorder Button */}
       <motion.button
-        className="fixed top-8 right-28 z-50 p-3 rounded-full bg-slate-800/80 backdrop-blur-md border border-white/20 hover:bg-slate-700/80 transition-colors group"
+        className="fixed top-8 right-8 z-50 p-3 rounded-full bg-slate-800/80 backdrop-blur-md border border-white/20 hover:bg-slate-700/80 transition-colors group"
         onClick={() => setShowRecorder(true)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}

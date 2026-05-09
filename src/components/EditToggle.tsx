@@ -36,7 +36,7 @@ export function EditToggle() {
 
   return (
     <motion.div
-      className="fixed top-8 right-8 z-50"
+      className="fixed top-24 right-8 z-50"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.5 }}
