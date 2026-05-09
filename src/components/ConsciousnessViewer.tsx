@@ -287,7 +287,7 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full flex-1 overflow-hidden">
       {/* Control Panel */}
       <motion.div 
         className="absolute top-4 left-4 z-40 flex gap-2"

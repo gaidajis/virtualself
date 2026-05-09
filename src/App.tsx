@@ -100,10 +100,10 @@ function App() {
         </motion.header>
 
         {/* Main Content Area */}
-        <main className="flex-1 w-full flex justify-center items-start overflow-hidden pt-4 pb-12 relative">
+        <main className="flex-1 w-full flex overflow-hidden pt-4 pb-12 relative">
           {rawData ? (
             viewMode === 'consciousness' ? (
-              <ConsciousnessViewer data={rawData} />
+              <div className="flex-1 w-full relative flex"><ConsciousnessViewer data={rawData} /></div>
             ) : (
               <JsonViewer data={rawData} />
             )
