@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Volume2, VolumeX, Music } from 'lucide-react';
 import { useVirtualMe } from '@/store/useVirtualMe';
@@ -7,6 +7,12 @@ export function MusicPlayer() {
   const { isMusicPlaying, setIsMusicPlaying, musicVolume, setMusicVolume } = useVirtualMe();
   const [showVolume, setShowVolume] = useState(false);
 
+  // Audio Context Refs
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const oscillatorsRef = useRef<OscillatorNode[]>([]);
+  const filterNodeRef = useRef<BiquadFilterNode | null>(null);
+
   // Auto-hide volume slider after 3 seconds
   useEffect(() => {
     if (showVolume) {
@@ -14,6 +20,82 @@ export function MusicPlayer() {
       return () => clearTimeout(timer);
     }
   }, [showVolume, musicVolume]);
+
+  // Handle ambient sound synthesis
+  useEffect(() => {
+    if (isMusicPlaying) {
+      // Initialize Audio Context if not exists
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+
+      const ctx = audioCtxRef.current;
+      if (ctx.state === 'suspended') ctx.resume();
+
+      // Master Gain Node for volume control
+      const masterGain = ctx.createGain();
+      masterGain.connect(ctx.destination);
+      masterGain.gain.setValueAtTime(0, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(musicVolume * 0.3, ctx.currentTime + 2); // Soft attack
+      gainNodeRef.current = masterGain;
+
+      // Lowpass filter to make it sound muffled/ambient
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(400, ctx.currentTime);
+      // Slowly modulate filter
+      filter.frequency.linearRampToValueAtTime(800, ctx.currentTime + 10);
+      filter.connect(masterGain);
+      filterNodeRef.current = filter;
+
+      // Create a chord of oscillators for a drone sound
+      // Frequencies for a soothing CM7 add9 chord (approx) in low octaves
+      const frequencies = [65.41, 98.00, 130.81, 164.81, 196.00];
+
+      oscillatorsRef.current = frequencies.map((freq, i) => {
+        const osc = ctx.createOscillator();
+        osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+
+        // Slight detune for thickness
+        osc.frequency.setValueAtTime(freq + (Math.random() * 2 - 1), ctx.currentTime);
+
+        const oscGain = ctx.createGain();
+        oscGain.gain.value = 1 / frequencies.length; // Balance levels
+
+        osc.connect(oscGain);
+        oscGain.connect(filter);
+
+        osc.start();
+        return osc;
+      });
+
+    } else {
+      // Fade out and stop
+      if (gainNodeRef.current && audioCtxRef.current) {
+        const ctx = audioCtxRef.current;
+        gainNodeRef.current.gain.linearRampToValueAtTime(0, ctx.currentTime + 2); // Soft release
+
+        // Cleanup after fade out
+        setTimeout(() => {
+          oscillatorsRef.current.forEach(osc => osc.stop());
+          oscillatorsRef.current = [];
+        }, 2000);
+      }
+    }
+
+    return () => {
+      // Cleanup on unmount, but don't kill the audio context abruptly unless needed
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMusicPlaying]);
+
+  // Update volume dynamically
+  useEffect(() => {
+    if (gainNodeRef.current && audioCtxRef.current) {
+      // Max volume is scaled down because pure oscillators are loud
+      gainNodeRef.current.gain.linearRampToValueAtTime(musicVolume * 0.3, audioCtxRef.current.currentTime + 0.1);
+    }
+  }, [musicVolume]);
 
   return (
     <motion.div

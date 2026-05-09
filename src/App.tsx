@@ -134,8 +134,8 @@ function App() {
         </div>
 
         {/* Main Orbit Layout */}
-        <main className="flex-1 flex items-center justify-center relative">
-          <div className="relative w-[1400px] h-[1400px] flex items-center justify-center">
+        <main className="flex-1 flex items-center justify-center relative w-full h-full overflow-hidden">
+          <div className="relative w-full max-w-[100vmin] aspect-square flex items-center justify-center">
             {/* Center Portrait */}
             <motion.div
               className="absolute z-20"
@@ -149,17 +149,17 @@ function App() {
               <CenterPortrait />
             </motion.div>
 
-            {/* Orbiting Clusters - Increased spacing */}
+            {/* Orbiting Clusters - Responsive positioning on a circle */}
             <AnimatePresence>
               {!selectedCluster && (
                 <>
-                  {/* Timeline - Right */}
+                  {/* Timeline - Right (0 degrees) */}
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '280px',
+                      right: '0%',
                       top: '50%',
-                      transform: 'translateY(-50%)'
+                      transform: 'translate(50%, -50%)'
                     }}
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -169,12 +169,13 @@ function App() {
                     <TimelineCluster />
                   </motion.div>
 
-                  {/* Interests - Top Right */}
+                  {/* Interests - Top Right (308 degrees / -52 deg approx) */}
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '420px',
-                      top: '280px'
+                      left: '85.3%', // 50 + 50*cos(-45) = 85.3
+                      top: '14.6%',  // 50 + 50*sin(-45) = 14.6
+                      transform: 'translate(-50%, -50%)'
                     }}
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -184,12 +185,13 @@ function App() {
                     <MusicCluster />
                   </motion.div>
 
-                  {/* Places - Top Left */}
+                  {/* Places - Top Left (232 degrees / -128 deg approx) */}
                   <motion.div
                     className="absolute"
                     style={{ 
-                      left: '420px',
-                      top: '280px'
+                      left: '14.6%', // 50 + 50*cos(135)
+                      top: '14.6%',
+                      transform: 'translate(-50%, -50%)'
                     }}
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -199,27 +201,13 @@ function App() {
                     <PlacesCluster />
                   </motion.div>
 
-                  {/* Expertise - Bottom Right */}
+                  {/* Genealogy - Bottom Left (142 degrees approx) */}
                   <motion.div
                     className="absolute"
                     style={{ 
-                      right: '420px',
-                      bottom: '280px'
-                    }}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 50 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                  >
-                    <ExpertiseCluster />
-                  </motion.div>
-
-                  {/* Genealogy - Bottom Left */}
-                  <motion.div
-                    className="absolute"
-                    style={{ 
-                      left: '420px',
-                      bottom: '280px'
+                      left: '14.6%',
+                      top: '85.3%', // 50 + 50*sin(135)
+                      transform: 'translate(-50%, -50%)'
                     }}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -227,6 +215,22 @@ function App() {
                     transition={{ duration: 0.5, delay: 0.7 }}
                   >
                     <GenealogyCluster />
+                  </motion.div>
+
+                  {/* Expertise - Bottom Right (52 degrees approx) */}
+                  <motion.div
+                    className="absolute"
+                    style={{ 
+                      left: '85.3%',
+                      top: '85.3%',
+                      transform: 'translate(-50%, -50%)'
+                    }}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 50 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                  >
+                    <ExpertiseCluster />
                   </motion.div>
                 </>
               )}
@@ -236,55 +240,57 @@ function App() {
             {!selectedCluster && (
               <svg
                 className="absolute inset-0 w-full h-full pointer-events-none"
-                style={{ zIndex: 5 }}
+                viewBox="0 0 100 100"
+                preserveAspectRatio="xMidYMid meet"
+                style={{ zIndex: 5, overflow: 'visible' }}
               >
                 <defs>
                   <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor="rgba(100, 200, 255, 0)" />
-                    <stop offset="50%" stopColor="rgba(100, 200, 255, 0.2)" />
+                    <stop offset="50%" stopColor="rgba(100, 200, 255, 0.4)" />
                     <stop offset="100%" stopColor="rgba(100, 200, 255, 0)" />
                   </linearGradient>
                 </defs>
-                {/* Lines from center to clusters */}
+                {/* Lines from center (50,50) to clusters */}
                 <motion.line
-                  x1="700" y1="700" x2="1080" y2="700"
+                  x1="50" y1="50" x2="100" y2="50"
                   stroke="url(#lineGrad)"
-                  strokeWidth="1"
+                  strokeWidth="0.2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 1, delay: 0.5 }}
                 />
                 <motion.line
-                  x1="700" y1="700" x2="920" y2="420"
+                  x1="50" y1="50" x2="85.3" y2="14.6"
                   stroke="url(#lineGrad)"
-                  strokeWidth="1"
+                  strokeWidth="0.2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 1, delay: 0.6 }}
                 />
                 <motion.line
-                  x1="700" y1="700" x2="480" y2="420"
+                  x1="50" y1="50" x2="14.6" y2="14.6"
                   stroke="url(#lineGrad)"
-                  strokeWidth="1"
+                  strokeWidth="0.2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 1, delay: 0.7 }}
                 />
                 <motion.line
-                  x1="700" y1="700" x2="920" y2="980"
+                  x1="50" y1="50" x2="14.6" y2="85.3"
                   stroke="url(#lineGrad)"
-                  strokeWidth="1"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 1, delay: 0.8 }}
-                />
-                <motion.line
-                  x1="700" y1="700" x2="480" y2="980"
-                  stroke="url(#lineGrad)"
-                  strokeWidth="1"
+                  strokeWidth="0.2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 1, delay: 0.9 }}
+                />
+                <motion.line
+                  x1="50" y1="50" x2="85.3" y2="85.3"
+                  stroke="url(#lineGrad)"
+                  strokeWidth="0.2"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1, delay: 0.8 }}
                 />
               </svg>
             )}

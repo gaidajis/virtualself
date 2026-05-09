@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import type { LifeTimelineEvent } from '@/types';
 import { Globe, MapPin, Compass } from 'lucide-react';
 import { useVirtualMe } from '@/store/useVirtualMe';
+import { WorldMap } from '@/components/WorldMap';
 
 interface PlacesViewProps {
   data: { countriesVisitedCount: number; notes: string };
@@ -72,11 +73,21 @@ export function PlacesView({ data, timeline, isEditMode = false }: PlacesViewPro
         )}
       </motion.div>
 
-      {/* Life journey map */}
+      {/* Abstract World Map */}
+      <motion.div
+        className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 relative"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <WorldMap locations={uniqueLocations} countriesVisited={data.countriesVisitedCount} />
+      </motion.div>
+
+      {/* Life journey narrative */}
       <div>
         <div className="flex items-center gap-2 text-emerald-400 mb-4">
           <Compass className="w-5 h-5" />
-          <span className="text-sm font-medium tracking-wider uppercase">Life Journey</span>
+          <span className="text-sm font-medium tracking-wider uppercase">Life Journey Narrative</span>
         </div>
 
         <div className="relative">

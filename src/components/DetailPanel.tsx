@@ -84,14 +84,14 @@ export function DetailPanel() {
 
           {/* Panel */}
           <motion.div
-            className="fixed right-0 top-0 h-full w-full max-w-2xl z-50 bg-slate-900/80 backdrop-blur-2xl border-l border-white/10 shadow-2xl overflow-hidden"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
+            className={`fixed right-0 top-0 h-full w-full ${selectedCluster === 'timeline' ? 'max-w-full' : 'max-w-2xl'} z-50 bg-slate-900/90 backdrop-blur-3xl border-l border-white/10 shadow-2xl overflow-hidden`}
+            initial={selectedCluster === 'timeline' ? { opacity: 0, scale: 0.95 } : { x: '100%' }}
+            animate={selectedCluster === 'timeline' ? { opacity: 1, scale: 1 } : { x: 0 }}
+            exit={selectedCluster === 'timeline' ? { opacity: 0, scale: 0.95 } : { x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-8 border-b border-white/10">
+            <div className={`flex items-center justify-between p-8 border-b border-white/10 ${selectedCluster === 'timeline' ? 'max-w-7xl mx-auto' : ''}`}>
               <div className="flex items-center gap-4">
                 {isPrivate ? (
                   <Unlock className="w-6 h-6 text-violet-400" />
@@ -116,7 +116,7 @@ export function DetailPanel() {
             </div>
 
             {/* Content */}
-            <div className="p-8 overflow-y-auto h-[calc(100%-100px)] custom-scrollbar">
+            <div className={`p-8 overflow-y-auto h-[calc(100%-100px)] custom-scrollbar ${selectedCluster === 'timeline' ? 'max-w-7xl mx-auto' : ''}`}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedCluster + activeContext}
@@ -124,6 +124,7 @@ export function DetailPanel() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.3 }}
+                  className={selectedCluster === 'timeline' ? 'w-full' : ''}
                 >
                   {getPanelContent()}
                 </motion.div>
