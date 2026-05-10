@@ -23,10 +23,15 @@ function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const basePath = import.meta.env.BASE_URL || '/';
-        const response = await fetch(`${basePath}paris.json`);
-        const data: ParisData = await response.json();
-        setRawData(data);
+        const storedData = localStorage.getItem('virtualMeData');
+        if (storedData) {
+          setRawData(JSON.parse(storedData));
+        } else {
+          const basePath = import.meta.env.BASE_URL || '/';
+          const response = await fetch(`${basePath}paris.json`);
+          const data: ParisData = await response.json();
+          setRawData(data);
+        }
       } catch (error) {
         console.error('Failed to load data:', error);
       } finally {
