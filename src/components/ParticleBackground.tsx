@@ -105,13 +105,16 @@ export function ParticleBackground() {
 
         // Draw connections (only check every 5th particle for performance)
         if (i % 5 === 0 && !isPanelOpen) {
-          particles.slice(i + 1).forEach((other, j) => {
-            if (j % 3 !== 0) return;
+          const numParticles = particles.length;
+          for (let j = i + 1; j < numParticles; j++) {
+            if ((j - (i + 1)) % 3 !== 0) continue;
+            const other = particles[j];
             const dx = particle.x - other.x;
             const dy = particle.y - other.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+            const distanceSq = dx * dx + dy * dy;
 
-            if (distance < 120) {
+            if (distanceSq < 14400) { // 120 * 120
+              const distance = Math.sqrt(distanceSq);
               const opacity = (1 - distance / 120) * 0.3;
               ctx.beginPath();
               ctx.moveTo(particle.x, particle.y);
@@ -120,7 +123,7 @@ export function ParticleBackground() {
               ctx.lineWidth = 0.5;
               ctx.stroke();
             }
-          });
+          }
         }
       });
 
