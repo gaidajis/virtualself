@@ -1,4 +1,4 @@
-import type { ParisData, FilteredData, ContextType } from '@/types';
+import type { ParisData, FilteredData, ContextType } from '../types';
 
 export function getFilteredData(data: ParisData, context: ContextType): FilteredData {
   switch (context) {
