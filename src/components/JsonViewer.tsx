@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, ChevronRight, ChevronDown } from 'lucide-react';
 
-type JsonValue =
+export type JsonValue =
   | string
   | number
   | boolean
