@@ -274,11 +274,15 @@ export const useVirtualMe = create<VirtualMeState>()(
     
     // Legacy data (for backward compatibility)
     rawData: null,
-    setRawData: (data) => set({ rawData: data }),
+    setRawData: (data) => {
+      localStorage.setItem('virtualMeData', JSON.stringify(data));
+      set({ rawData: data });
+    },
     updateRawData: (updater) => {
       set((state) => {
         if (state.rawData) {
           updater(state.rawData);
+          localStorage.setItem('virtualMeData', JSON.stringify(state.rawData));
         }
       });
     },
@@ -538,6 +542,9 @@ export const useVirtualMe = create<VirtualMeState>()(
     // Save/Export
     exportData: () => {
       const state = get();
+      if (state.rawData) {
+        return JSON.stringify(state.rawData, null, 2);
+      }
       const exportObj = {
         userProfile: state.userProfile,
         rawData: state.rawData,

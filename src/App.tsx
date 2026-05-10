@@ -23,10 +23,15 @@ function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const basePath = import.meta.env.BASE_URL || '/';
-        const response = await fetch(`${basePath}paris.json`);
-        const data: ParisData = await response.json();
-        setRawData(data);
+        const storedData = localStorage.getItem('virtualMeData');
+        if (storedData) {
+          setRawData(JSON.parse(storedData));
+        } else {
+          const basePath = import.meta.env.BASE_URL || '/';
+          const response = await fetch(`${basePath}paris.json`);
+          const data: ParisData = await response.json();
+          setRawData(data);
+        }
       } catch (error) {
         console.error('Failed to load data:', error);
       } finally {
@@ -100,10 +105,10 @@ function App() {
         </motion.header>
 
         {/* Main Content Area */}
-        <main className="flex-1 w-full flex justify-center items-start overflow-hidden pt-4 pb-12 relative">
+        <main className="flex-1 w-full flex overflow-hidden pt-4 pb-12 relative">
           {rawData ? (
             viewMode === 'consciousness' ? (
-              <ConsciousnessViewer data={rawData} />
+              <div className="flex-1 w-full relative flex"><ConsciousnessViewer data={rawData} /></div>
             ) : (
               <JsonViewer data={rawData} />
             )

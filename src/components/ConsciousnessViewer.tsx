@@ -1,11 +1,12 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  MapPin, Image, Video, Music, Brain, Users,
-  Heart, Target, Briefcase, Sparkles,
-  ChevronRight, ChevronDown, X, Trash2, Download, Upload,
-  Clock, MessageSquare, Zap, Award, Shield, Lock
+  MapPin, Image, Video, Music, Brain,
+  ChevronRight, ChevronDown, X, Download, Upload,
+  Clock, MessageSquare, Zap, Shield, Lock,
+  FileText, Database, Settings, User, GraduationCap, Code, Link, Activity, Star, Heart, Briefcase
 } from 'lucide-react';
+import * as d3 from 'd3-force';
 import { useVirtualMe } from '@/store/useVirtualMe';
 import type { ParisData } from '@/types';
 
@@ -31,23 +32,60 @@ interface NodeData {
   mediaType?: 'photo' | 'video' | 'audio' | 'location' | 'text';
 }
 
+const KEY_ICONS: Record<string, React.ReactNode> = {
+  profile: <User className="w-5 h-5" />,
+  lifeTimeline: <Clock className="w-5 h-5" />,
+  education: <GraduationCap className="w-5 h-5" />,
+  workExperience: <Briefcase className="w-5 h-5" />,
+  skills: <Code className="w-5 h-5" />,
+  interestsAndValues: <Heart className="w-5 h-5" />,
+  healthAndPerformance: <Activity className="w-5 h-5" />,
+  relationships: <Link className="w-5 h-5" />,
+  financeAndWorkstyle: <Settings className="w-5 h-5" />,
+  projects: <Zap className="w-5 h-5" />,
+  learningAndRoadmap: <Star className="w-5 h-5" />,
+  personalityModel: <Brain className="w-5 h-5" />,
+  memoryModel: <Database className="w-5 h-5" />,
+  system: <Settings className="w-5 h-5" />,
+  userId: <User className="w-5 h-5" />
+};
+
+const KEY_COLORS: Record<string, string> = {
+  profile: 'from-blue-400 via-indigo-500 to-purple-500',
+  lifeTimeline: 'from-purple-400 via-pink-500 to-rose-500',
+  education: 'from-emerald-400 via-teal-500 to-cyan-500',
+  workExperience: 'from-slate-400 via-gray-500 to-zinc-500',
+  skills: 'from-cyan-400 via-blue-500 to-indigo-500',
+  interestsAndValues: 'from-pink-400 via-rose-500 to-red-500',
+  healthAndPerformance: 'from-red-400 via-orange-500 to-amber-500',
+  relationships: 'from-rose-400 via-pink-500 to-purple-500',
+  financeAndWorkstyle: 'from-emerald-500 via-green-600 to-teal-700',
+  projects: 'from-amber-400 via-orange-500 to-red-500',
+  learningAndRoadmap: 'from-yellow-400 via-amber-500 to-orange-500',
+  personalityModel: 'from-indigo-400 via-purple-500 to-pink-500',
+  memoryModel: 'from-blue-500 via-cyan-600 to-teal-500',
+  system: 'from-gray-400 via-slate-500 to-zinc-600',
+  userId: 'from-gray-500 via-gray-600 to-gray-700'
+};
+
 export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
-  const { isEditMode, toggleEditMode, exportData, importData } = useVirtualMe();
+  const { isEditMode, toggleEditMode, exportData, importData, updateRawData } = useVirtualMe();
   const [selectedNode, setSelectedNode] = useState<NodeData | null>(null);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [isEditingNode, setIsEditingNode] = useState(false);
+  const [editJsonStr, setEditJsonStr] = useState("");
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Generate nodes from data
-  const nodes: NodeData[] = useMemo(() => {
-    const nodeList: NodeData[] = [];
-    const centerX = 0;
-    const centerY = 0;
+  const [nodes, setNodes] = useState<NodeData[]>([]);
 
-    // Central consciousness node
+  // Generate initial nodes
+  useEffect(() => {
+    const nodeList: NodeData[] = [];
+
     nodeList.push({
       id: 'consciousness',
       type: 'consciousness',
@@ -55,178 +93,64 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
       sublabel: 'Core Consciousness',
       icon: <Brain className="w-6 h-6" />,
       color: 'from-cyan-400 via-blue-500 to-purple-600',
-      size: 80,
-      x: centerX,
-      y: centerY,
+      size: 100,
+      x: 0,
+      y: 0,
       connections: [],
       mediaType: 'text'
     });
 
-    const radius = 200;
-    let angle = 0;
-    const angleStep = (Math.PI * 2) / 8;
+    const keys = Object.keys(data);
 
-    // Thoughts & Personality
-    angle += angleStep;
-    nodeList.push({
-      id: 'thoughts',
-      type: 'thought',
-      label: 'Thoughts',
-      sublabel: `${data.personalityModel?.selfDescription?.length || 0} traits`,
-      icon: <Sparkles className="w-5 h-5" />,
-      color: 'from-yellow-400 via-orange-500 to-red-500',
-      size: 60,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      connections: ['consciousness'],
-      data: data.personalityModel,
-      mediaType: 'text'
-    });
+    keys.forEach((key) => {
+      const val = data[key as keyof ParisData];
+      let sublabel = '';
+      if (Array.isArray(val)) {
+        sublabel = `${val.length} items`;
+      } else if (typeof val === 'object' && val !== null) {
+        sublabel = `${Object.keys(val).length} sections`;
+      }
 
-    // Memories & Timeline
-    angle += angleStep;
-    nodeList.push({
-      id: 'memories',
-      type: 'memory',
-      label: 'Memories',
-      sublabel: `${data.lifeTimeline?.length || 0} moments`,
-      icon: <Clock className="w-5 h-5" />,
-      color: 'from-purple-400 via-pink-500 to-rose-500',
-      size: 60,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      connections: ['consciousness'],
-      data: data.lifeTimeline,
-      mediaType: 'text'
-    });
+      const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
 
-    // Places
-    angle += angleStep;
-    nodeList.push({
-      id: 'places',
-      type: 'place',
-      label: 'Places',
-      sublabel: data.profile?.currentLocation?.city || 'Locations',
-      icon: <MapPin className="w-5 h-5" />,
-      color: 'from-green-400 via-emerald-500 to-teal-500',
-      size: 60,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      connections: ['consciousness'],
-      data: data.profile?.currentLocation,
-      mediaType: 'location'
-    });
-
-    // People & Connections
-    angle += angleStep;
-    nodeList.push({
-      id: 'connections',
-      type: 'connection',
-      label: 'Connections',
-      sublabel: data.relationships?.maritalStatus === 'married' ? 'Married' : 'Social',
-      icon: <Users className="w-5 h-5" />,
-      color: 'from-pink-400 via-rose-500 to-red-500',
-      size: 60,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      connections: ['consciousness'],
-      data: data.relationships,
-      mediaType: 'text'
-    });
-
-    // Skills & Expertise
-    angle += angleStep;
-    nodeList.push({
-      id: 'skills',
-      type: 'skill',
-      label: 'Skills',
-      sublabel: `${Object.keys(data.skills || {}).length} domains`,
-      icon: <Award className="w-5 h-5" />,
-      color: 'from-blue-400 via-indigo-500 to-violet-500',
-      size: 60,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      connections: ['consciousness'],
-      data: data.skills,
-      mediaType: 'text'
-    });
-
-    // Projects
-    angle += angleStep;
-    nodeList.push({
-      id: 'projects',
-      type: 'project',
-      label: 'Projects',
-      sublabel: `${Object.keys(data.projects || {}).length} active`,
-      icon: <Zap className="w-5 h-5" />,
-      color: 'from-amber-400 via-orange-500 to-red-500',
-      size: 60,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      connections: ['consciousness'],
-      data: data.projects,
-      mediaType: 'text'
-    });
-
-    // Health & Goals
-    angle += angleStep;
-    nodeList.push({
-      id: 'health',
-      type: 'health',
-      label: 'Health',
-      sublabel: 'Wellness & Goals',
-      icon: <Heart className="w-5 h-5" />,
-      color: 'from-red-400 via-pink-500 to-rose-500',
-      size: 60,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      connections: ['consciousness'],
-      data: data.healthAndPerformance,
-      mediaType: 'text'
-    });
-
-    // Work & Education
-    angle += angleStep;
-    nodeList.push({
-      id: 'work',
-      type: 'skill',
-      label: 'Work',
-      sublabel: data.workExperience?.[0]?.title || 'Career',
-      icon: <Briefcase className="w-5 h-5" />,
-      color: 'from-slate-400 via-gray-500 to-zinc-500',
-      size: 60,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      connections: ['consciousness'],
-      data: data.workExperience,
-      mediaType: 'text'
-    });
-
-    // Add secondary nodes for projects
-    if (data.projects) {
-      const projectKeys = Object.keys(data.projects as unknown as Record<string, unknown>);
-      projectKeys.forEach((key, idx) => {
-        const project = (data.projects as unknown as Record<string, Record<string, string>>)[key];
-        const projAngle = angle + (idx * 0.3);
-        nodeList.push({
-          id: `project-${key}`,
-          type: 'project',
-          label: project?.title || key,
-          sublabel: 'Active Project',
-          icon: <Target className="w-4 h-4" />,
-          color: 'from-amber-500 via-yellow-500 to-orange-500',
-          size: 40,
-          x: Math.cos(projAngle) * (radius + 100),
-          y: Math.sin(projAngle) * (radius + 100),
-          connections: ['projects'],
-          data: project,
-          mediaType: 'text'
-        });
+      nodeList.push({
+        id: key,
+        type: 'thought',
+        label: label,
+        sublabel: sublabel,
+        icon: KEY_ICONS[key] || <FileText className="w-5 h-5" />,
+        color: KEY_COLORS[key] || 'from-slate-400 via-gray-500 to-zinc-500',
+        size: 70,
+        x: Math.random() * 400 - 200,
+        y: Math.random() * 400 - 200,
+        connections: ['consciousness'],
+        data: val,
+        mediaType: 'text'
       });
-    }
+    });
 
-    return nodeList;
+    // Run physics simulation
+    const simulation = d3.forceSimulation(nodeList as any)
+      .force('charge', d3.forceManyBody().strength(-2000))
+      .force('collide', d3.forceCollide().radius((d: any) => d.size * 1.5))
+      .force('center', d3.forceCenter(0, 0))
+      .force('link', d3.forceLink().id((d: any) => d.id).distance(250).links(
+        nodeList.slice(1).map(n => ({ source: n.id, target: 'consciousness' }))
+      ));
+
+    simulation.on('tick', () => {
+      setNodes([...nodeList]);
+    });
+
+    return () => {
+      simulation.stop();
+    };
   }, [data]);
+
+  useEffect(() => {
+    setIsEditingNode(false);
+    setEditJsonStr('');
+  }, [selectedNode?.id]);
 
   // Handle pan drag
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -287,7 +211,7 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full flex-1 overflow-hidden">
       {/* Control Panel */}
       <motion.div 
         className="absolute top-4 left-4 z-40 flex gap-2"
@@ -505,7 +429,13 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
 
               {/* Content */}
               <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
-                {selectedNode.data ? (
+                {isEditingNode ? (
+                  <textarea
+                    className="w-full h-full bg-slate-950 text-cyan-300 font-mono text-xs p-4 rounded-xl border border-cyan-500/30 focus:outline-none focus:border-cyan-400"
+                    value={editJsonStr}
+                    onChange={(e) => setEditJsonStr(e.target.value)}
+                  />
+                ) : selectedNode.data ? (
                   <div className="space-y-4">
                     {typeof selectedNode.data === 'object' && (
                       <NodeDetailContent data={selectedNode.data} type={selectedNode.type} />
@@ -522,12 +452,41 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
               {/* Actions */}
               {isEditMode && (
                 <div className="p-4 border-t border-white/10 flex gap-2">
-                  <button className="flex-1 py-2 px-4 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/30 transition-colors text-sm font-medium">
-                    Edit
-                  </button>
-                  <button className="py-2 px-4 rounded-xl bg-red-500/20 border border-red-500/40 text-red-400 hover:bg-red-500/30 transition-colors">
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  {isEditingNode ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          try {
+                            const parsed = JSON.parse(editJsonStr);
+                            updateRawData((draft) => {
+                              (draft as any)[selectedNode.id] = parsed;
+                            });
+                            setIsEditingNode(false);
+                            // Also optimistically update selectedNode
+                            setSelectedNode({ ...selectedNode, data: parsed });
+                          } catch (e) {
+                            alert("Invalid JSON");
+                          }
+                        }}
+                        className="flex-1 py-2 px-4 rounded-xl bg-green-500/20 border border-green-500/40 text-green-400 hover:bg-green-500/30 transition-colors text-sm font-medium">
+                        Save
+                      </button>
+                      <button
+                        onClick={() => setIsEditingNode(false)}
+                        className="flex-1 py-2 px-4 rounded-xl bg-slate-500/20 border border-slate-500/40 text-slate-400 hover:bg-slate-500/30 transition-colors text-sm font-medium">
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setEditJsonStr(JSON.stringify(selectedNode.data, null, 2));
+                        setIsEditingNode(true);
+                      }}
+                      className="flex-1 py-2 px-4 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/30 transition-colors text-sm font-medium">
+                      Edit Data
+                    </button>
+                  )}
                 </div>
               )}
             </div>
