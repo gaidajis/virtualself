@@ -2,9 +2,16 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, ChevronRight, ChevronDown } from 'lucide-react';
 
+type JsonValue =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: JsonValue }
+  | JsonValue[];
+
 interface JsonViewerProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  data: JsonValue;
 }
 
 export function JsonViewer({ data }: JsonViewerProps) {
@@ -16,8 +23,7 @@ export function JsonViewer({ data }: JsonViewerProps) {
 }
 
 interface JsonNodeProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  data: JsonValue;
   label?: string;
   isRoot?: boolean;
 }
@@ -32,8 +38,7 @@ function JsonNode({ data, label, isRoot = false }: JsonNodeProps) {
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   // Helper to render value with smart actions
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const renderValue = (key: string, value: any) => {
+  const renderValue = (key: string, value: JsonValue) => {
     if (typeof value === 'string') {
       const isLocation = key.toLowerCase().includes('location') || key.toLowerCase().includes('place') || key.toLowerCase().includes('city') || key.toLowerCase().includes('country');
 
@@ -113,8 +118,7 @@ function JsonNode({ data, label, isRoot = false }: JsonNodeProps) {
               className="ml-4 border-l border-white/10 pl-2 py-1"
             >
               {keys.map((key, index) => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const value = (data as any)[key];
+                const value = (data as Record<string, JsonValue>)[key];
                 const isObjectOrArray = value !== null && typeof value === 'object';
 
                 return (
