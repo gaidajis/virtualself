@@ -110,7 +110,7 @@ function App() {
             viewMode === 'consciousness' ? (
               <div className="flex-1 w-full relative flex"><ConsciousnessViewer data={rawData} /></div>
             ) : (
-              <JsonViewer data={rawData} />
+              <JsonViewer data={rawData as any} />
             )
           ) : (
             <div className="text-white/50">No data available</div>
