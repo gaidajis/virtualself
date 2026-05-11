@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, ChevronRight, ChevronDown } from 'lucide-react';
