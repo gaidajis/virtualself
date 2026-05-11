@@ -11,13 +11,13 @@ type JsonValue =
   | JsonValue[];
 
 interface JsonViewerProps {
-  data: JsonValue;
+  data: JsonValue | unknown;
 }
 
 export function JsonViewer({ data }: JsonViewerProps) {
   return (
     <div className="w-full max-w-4xl mx-auto p-6 bg-slate-900/80 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl overflow-y-auto max-h-[80vh] custom-scrollbar text-left font-mono text-sm">
-      <JsonNode data={data} label="VirtualMe" isRoot={true} />
+      <JsonNode data={data as JsonValue} label="VirtualMe" isRoot={true} />
     </div>
   );
 }
@@ -96,8 +96,8 @@ function JsonNode({ data, label, isRoot = false }: JsonNodeProps) {
   }
 
   if (typeof data === 'object') {
-    const keys = Object.keys(data);
-    if (keys.length === 0) return <span className="text-gray-400">{}</span>;
+    const entries = Object.entries(data as Record<string, JsonValue>);
+    if (entries.length === 0) return <span className="text-gray-400">{}</span>;
 
     return (
       <div className={isRoot ? "" : "ml-4"}>
@@ -105,7 +105,7 @@ function JsonNode({ data, label, isRoot = false }: JsonNodeProps) {
           {isExpanded ? <ChevronDown className="w-4 h-4 text-gray-500" /> : <ChevronRight className="w-4 h-4 text-gray-500" />}
           {label && <span className="text-cyan-300 mr-2">"{label}":</span>}
           <span className="text-gray-400">{'{'}</span>
-          {!isExpanded && <span className="text-gray-500 mx-2">... {keys.length} keys</span>}
+          {!isExpanded && <span className="text-gray-500 mx-2">... {entries.length} keys</span>}
           {!isExpanded && <span className="text-gray-400">{'}'}</span>}
         </div>
 
@@ -117,8 +117,7 @@ function JsonNode({ data, label, isRoot = false }: JsonNodeProps) {
               exit={{ height: 0, opacity: 0 }}
               className="ml-4 border-l border-white/10 pl-2 py-1"
             >
-              {keys.map((key, index) => {
-                const value = (data as Record<string, JsonValue>)[key];
+              {entries.map(([key, value], index) => {
                 const isObjectOrArray = value !== null && typeof value === 'object';
 
                 return (
@@ -131,7 +130,7 @@ function JsonNode({ data, label, isRoot = false }: JsonNodeProps) {
                         <span className="break-all">{renderValue(key, value)}</span>
                       </>
                     )}
-                    {index < keys.length - 1 && <span className="text-gray-400">,</span>}
+                    {index < entries.length - 1 && <span className="text-gray-400">,</span>}
                   </div>
                 );
               })}
