@@ -38,7 +38,7 @@ function JsonNode({ data, label, isRoot = false }: JsonNodeProps) {
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   // Helper to render value with smart actions
-  const renderValue = (key: string, value: JsonValue) => {
+  const renderValue = (key: string, value: unknown) => {
     if (typeof value === 'string') {
       const isLocation = key.toLowerCase().includes('location') || key.toLowerCase().includes('place') || key.toLowerCase().includes('city') || key.toLowerCase().includes('country');
 
