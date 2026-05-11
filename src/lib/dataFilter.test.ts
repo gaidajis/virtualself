@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert';
 import { isClusterVisible } from './dataFilter.ts';
-import type { ContextType } from '../types';
 
 test('isClusterVisible - WORK context', () => {
   assert.strictEqual(isClusterVisible('expertise', 'WORK'), true);
