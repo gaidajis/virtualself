@@ -41,7 +41,8 @@ function JsonNode({ data, label, isRoot = false }: JsonNodeProps) {
   // Helper to render value with smart actions
   const renderValue = (key: string, value: unknown) => {
     if (typeof value === 'string') {
-      const isLocation = key.toLowerCase().includes('location') || key.toLowerCase().includes('place') || key.toLowerCase().includes('city') || key.toLowerCase().includes('country');
+      const lowerKey = key.toLowerCase();
+      const isLocation = lowerKey.includes('location') || lowerKey.includes('place') || lowerKey.includes('city') || lowerKey.includes('country');
 
       if (isLocation) {
         const query = encodeURIComponent(value);
