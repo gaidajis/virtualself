@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, Image, Video, Music, Brain,
@@ -152,6 +152,14 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
     setEditJsonStr('');
   }, [selectedNode?.id]);
 
+  const nodeMap = useMemo(() => {
+    const map = new Map<string, NodeData>();
+    for (const node of nodes) {
+      map.set(node.id, node);
+    }
+    return map;
+  }, [nodes]);
+
   // Handle pan drag
   const handleMouseDown = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('.node-element')) return;
@@ -297,7 +305,7 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
             </defs>
             {nodes.flatMap(node => 
               node.connections.map(targetId => {
-                const targetNode = nodes.find(n => n.id === targetId);
+                const targetNode = nodeMap.get(targetId);
                 if (!targetNode) return null;
                 return (
                   <motion.line
