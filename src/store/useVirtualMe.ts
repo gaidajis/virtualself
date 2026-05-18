@@ -611,6 +611,24 @@ export const useVirtualMe = create<VirtualMeState>()(
     getFilteredData: (entities, context, requiredPermission) => {
       const state = get();
       const viewerPerms = state.viewerContext.grantedPermissions;
+
+      // Check early to avoid setting up if empty
+      if (!entities || entities.length === 0) return [];
+
+      // Calculate max perm index outside the loop
+      const permHierarchy: PermissionScope[] = [
+        'strict_private',
+        'private',
+        'partner_only',
+        'family_only',
+        'approved_connection',
+        'alumni_network_only',
+        'work_network_only',
+        'authenticated',
+        'public'
+      ];
+
+      const viewerMaxPermIdx = Math.max(...viewerPerms.map(p => permHierarchy.indexOf(p)));
       
       return entities.filter(entity => {
         const entityPerm = (entity as any).visibility || 'public';
@@ -630,20 +648,7 @@ export const useVirtualMe = create<VirtualMeState>()(
         }
         
         // For other contexts, check permission hierarchy
-        const permHierarchy: PermissionScope[] = [
-          'strict_private',
-          'private',
-          'partner_only',
-          'family_only',
-          'approved_connection',
-          'alumni_network_only',
-          'work_network_only',
-          'authenticated',
-          'public'
-        ];
-        
         const entityPermIdx = permHierarchy.indexOf(entityPerm);
-        const viewerMaxPermIdx = Math.max(...viewerPerms.map(p => permHierarchy.indexOf(p)));
         
         return entityPermIdx >= viewerMaxPermIdx || entityPerm === 'public';
       });

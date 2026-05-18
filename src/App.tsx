@@ -4,7 +4,7 @@ import { Brain, MessageSquare } from 'lucide-react';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { VoiceRecorder } from '@/components/VoiceRecorder';
 import { EditToggle } from '@/components/EditToggle';
-import { JsonViewer } from '@/components/JsonViewer';
+import { JsonViewer, type JsonValue } from '@/components/JsonViewer';
 import { ConsciousnessViewer } from '@/components/ConsciousnessViewer';
 import { useVirtualMe } from '@/store/useVirtualMe';
 import type { ParisData } from '@/types';
@@ -110,7 +110,7 @@ function App() {
             viewMode === 'consciousness' ? (
               <div className="flex-1 w-full relative flex"><ConsciousnessViewer data={rawData} /></div>
             ) : (
-              <JsonViewer data={rawData as any} />
+              <JsonViewer data={rawData as unknown as JsonValue} />
             )
           ) : (
             <div className="text-white/50">No data available</div>

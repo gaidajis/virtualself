@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, Image, Video, Music, Brain,
@@ -81,6 +81,8 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [nodes, setNodes] = useState<NodeData[]>([]);
+
+  const nodeMap = useMemo(() => new Map(nodes.map(n => [n.id, n])), [nodes]);
 
   // Generate initial nodes
   useEffect(() => {
@@ -297,7 +299,7 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
             </defs>
             {nodes.flatMap(node => 
               node.connections.map(targetId => {
-                const targetNode = nodes.find(n => n.id === targetId);
+                const targetNode = nodeMap.get(targetId);
                 if (!targetNode) return null;
                 return (
                   <motion.line
