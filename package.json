@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "test": "node --test src/lib/dataFilter.test.ts && vitest run",
+    "test": "node --test src/lib/dataFilter.test.ts src/lib/utils.test.ts && vitest run",
     "preview": "vite preview"
   },
   "dependencies": {
