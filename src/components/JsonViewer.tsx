@@ -24,7 +24,7 @@ export function JsonViewer({ data }: JsonViewerProps) {
 }
 
 interface JsonNodeProps {
-  data: JsonValue;
+  data: unknown;
   label?: string;
   isRoot?: boolean;
 }
