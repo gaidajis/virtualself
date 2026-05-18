@@ -462,12 +462,12 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
                           try {
                             const parsed = JSON.parse(editJsonStr);
                             updateRawData((draft) => {
-                              (draft as any)[selectedNode.id] = parsed;
+                              (draft as unknown as Record<string, unknown>)[selectedNode.id] = parsed;
                             });
                             setIsEditingNode(false);
                             // Also optimistically update selectedNode
                             setSelectedNode({ ...selectedNode, data: parsed });
-                          } catch (e) {
+                          } catch {
                             alert("Invalid JSON");
                           }
                         }}
@@ -513,6 +513,68 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
 }
 
 // Helper component to render node details
+// Helper to render values intelligently based on their key and content
+function renderSmartValue(key: string, value: unknown) {
+  if (typeof value === 'boolean') {
+    return (
+      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${value ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
+        {value ? 'Yes' : 'No'}
+      </span>
+    );
+  }
+
+  if (typeof value === 'string') {
+    const lowerKey = key.toLowerCase();
+
+    // Check if it's a date/time
+    if (lowerKey.includes('date') || lowerKey.includes('time') || lowerKey.includes('created') || lowerKey.includes('updated') || !isNaN(Date.parse(value))) {
+      // Validate that it's a date and not just a random string that Date.parse somehow accepts (like a number)
+      const date = new Date(value);
+      if (!isNaN(date.getTime()) && value.length > 8 && !/^\d+$/.test(value)) {
+         return (
+           <span className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-300">
+             <Clock className="w-3 h-3 text-blue-400" />
+             {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(date).replace(', 12:00 AM', '')}
+           </span>
+         );
+      }
+    }
+
+    // Check if it's a location
+    if (lowerKey.includes('location') || lowerKey.includes('place') || lowerKey.includes('city') || lowerKey.includes('country')) {
+       const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`;
+       return (
+         <a href={mapUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 transition-colors group">
+           <MapPin className="w-4 h-4 group-hover:scale-110 transition-transform" />
+           <span className="underline decoration-cyan-500/30 underline-offset-2">{value}</span>
+         </a>
+       );
+    }
+
+    // Check if it's a URL
+    if (value.startsWith('http://') || value.startsWith('https://')) {
+      return (
+        <a href={value} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors">
+          <Link className="w-3 h-3" />
+          <span className="underline decoration-blue-500/30 underline-offset-2 break-all">{value}</span>
+        </a>
+      );
+    }
+
+    return <span>{value}</span>;
+  }
+
+  if (typeof value === 'number') {
+    const lowerKey = key.toLowerCase();
+    if (lowerKey.includes('price') || lowerKey.includes('cost') || lowerKey.includes('amount') || lowerKey.includes('salary') || lowerKey.includes('revenue') || lowerKey.includes('capex')) {
+      return <span className="text-emerald-400 font-mono">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(value).replace('$', '≈$')}</span>;
+    }
+    return <span className="text-orange-400 font-mono">{value}</span>;
+  }
+
+  return <span>{String(value)}</span>;
+}
+
 function NodeDetailContent({ data, type }: { data: unknown; type: NodeType }) {
   if (!data || typeof data !== 'object') {
     return <div className="text-white/70">No data available</div>;
@@ -521,41 +583,84 @@ function NodeDetailContent({ data, type }: { data: unknown; type: NodeType }) {
   const entries = Object.entries(data as Record<string, unknown>);
   
   return (
-    <div className="space-y-3">
-      {entries.slice(0, 10).map(([key, value]) => {
+    <motion.div
+      className="space-y-3"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ staggerChildren: 0.05 }}
+    >
+      {entries.map(([key, value], index) => {
         if (value === null || value === undefined) return null;
-        if (typeof value === 'object') {
+
+        // Handle Arrays
+        if (Array.isArray(value)) {
           return (
-            <div key={key} className="p-3 rounded-xl bg-white/5 border border-white/10">
-              <div className="text-cyan-400 text-sm font-medium mb-2 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
-              <NodeDetailContent data={value} type={type} />
-            </div>
+             <motion.div
+               key={key}
+               className="p-4 rounded-xl bg-slate-800/40 border border-white/5 shadow-inner"
+               initial={{ opacity: 0, y: 10 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ delay: index * 0.05 }}
+             >
+               <div className="text-cyan-400 text-sm font-medium mb-3 capitalize flex items-center gap-2">
+                 {key.replace(/([A-Z])/g, ' $1').trim()}
+                 <span className="text-xs px-1.5 py-0.5 rounded bg-white/10 text-white/50">{value.length}</span>
+               </div>
+               {value.length > 0 && typeof value[0] !== 'object' ? (
+                 <div className="flex flex-wrap gap-2">
+                   {value.map((v, i) => (
+                     <span key={i} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-sm text-white/80 hover:bg-white/10 transition-colors">
+                       {renderSmartValue(key, v)}
+                     </span>
+                   ))}
+                 </div>
+               ) : (
+                 <div className="space-y-2">
+                   {value.map((v, i) => (
+                     <div key={i} className="pl-3 border-l-2 border-white/10">
+                       <NodeDetailContent data={v} type={type} />
+                     </div>
+                   ))}
+                 </div>
+               )}
+             </motion.div>
           );
         }
+
+        // Handle Nested Objects
+        if (typeof value === 'object') {
+          return (
+            <motion.div
+              key={key}
+              className="p-4 rounded-xl bg-slate-800/40 border border-white/5 shadow-inner"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+            >
+              <div className="text-cyan-400 text-sm font-medium mb-3 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
+              <NodeDetailContent data={value} type={type} />
+            </motion.div>
+          );
+        }
+
+        // Handle Primitives
         return (
-          <div key={key} className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
-            <div className="text-cyan-400 text-sm font-medium capitalize min-w-[120px]">
+          <motion.div
+            key={key}
+            className="flex items-start gap-3 p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors group"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+          >
+            <div className="text-cyan-400/80 group-hover:text-cyan-400 text-sm font-medium capitalize min-w-[140px] pt-0.5 transition-colors">
               {key.replace(/([A-Z])/g, ' $1').trim()}
             </div>
-            <div className="text-white/80 text-sm flex-1 break-all">
-              {typeof value === 'boolean' ? (
-                <span className={value ? 'text-green-400' : 'text-red-400'}>{value ? 'Yes' : 'No'}</span>
-              ) : Array.isArray(value) ? (
-                <div className="flex flex-wrap gap-1">
-                  {value.slice(0, 5).map((v, i) => (
-                    <span key={i} className="px-2 py-1 rounded-lg bg-white/10 text-xs">{String(v)}</span>
-                  ))}
-                  {value.length > 5 && (
-                    <span className="px-2 py-1 rounded-lg bg-white/10 text-xs">+{value.length - 5} more</span>
-                  )}
-                </div>
-              ) : (
-                String(value)
-              )}
+            <div className="text-white/90 text-sm flex-1 break-words leading-relaxed">
+              {renderSmartValue(key, value)}
             </div>
-          </div>
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 }
