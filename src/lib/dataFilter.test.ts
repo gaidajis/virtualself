@@ -3,83 +3,6 @@ import assert from 'node:assert';
 import { isClusterVisible, getFilteredData } from './dataFilter.ts';
 import type { ParisData } from '../types/index.ts';
 
-const mockData: ParisData = {
-  userId: 'user123',
-  profile: {
-    fullName: 'John Doe',
-    preferredName: 'Johnny',
-    dateOfBirth: '1990-01-01',
-    placeOfBirth: { city: 'Paris', country: 'France' },
-    gender: 'Male',
-    nationality: { mother: 'French', father: 'French' },
-    currentLocation: { city: 'Geneva', canton: 'Geneva', country: 'Switzerland', sinceYear: 2020 },
-    primaryLanguages: ['French (native)', 'English (fluent)', 'Spanish (basic)'],
-    learningLanguages: ['German'],
-  },
-  lifeTimeline: [
-    { period: '2010-2015', location: 'Cameroon', summary: 'Early career' },
-    { period: '2015-2018', location: 'United States', summary: 'Studies' },
-    { period: '2018-present', location: 'Switzerland', summary: 'Current job' },
-    { period: '2000-2010', location: 'France', summary: 'Childhood' },
-  ],
-  education: [
-    { level: 'Masters', field: 'Engineering', institution: 'MIT', country: 'USA', durationYears: 2, status: 'Completed', notes: '' },
-  ],
-  workExperience: [
-    { title: 'Engineer', organization: 'TechCorp', industry: 'Technology', location: 'Geneva', startApproxYear: 2018, endApproxYear: null, responsibilities: ['Coding'], skillsUsed: ['TypeScript'] },
-  ],
-  skills: {
-    domains: ['Engineering', 'Management', 'Design', 'Marketing', 'Sales'],
-    technical: ['TypeScript', 'React'],
-    softSkills: ['systems thinking', 'strategic planning', 'cross-cultural communication', 'teamwork'],
-  },
-  interestsAndValues: {
-    coreInterests: ['renewable energy', 'algo trading', 'scalable architecture', 'Japanese culture', 'minimalism', 'health', 'travel', 'music', 'random'],
-    travel: { countriesVisitedCount: 20, notes: 'Love traveling' },
-    values: ['intellectual curiosity', 'simplicity', 'healthspan', 'loyalty'],
-    lifestylePreferences: { aesthetic: ['minimalist'], social: ['introvert'] },
-  },
-  healthAndPerformance: {
-    goals: { exercise: 'daily', bodyComposition: 'lean', nutrition: 'balanced', sleep: '8 hours', ageing: 'slow' },
-    habits: { movement: 'running', mindset: 'meditation' },
-  },
-  relationships: {
-    maritalStatus: 'Single',
-    spouse: { fullName: '', approxAge: 0, profession: '', employer: '', assetsUnderManagement: '', involvementInProjects: '' },
-    family: { motherNationality: 'French', fatherNationality: 'French' },
-  },
-  financeAndWorkstyle: {
-    currentRole: 'Senior Engineer',
-    incomeSources: ['salary'],
-    goals: ['financial independence'],
-    riskAppetite: 'Moderate',
-    investmentThesisSummary: 'Diversified',
-  },
-  projects: {
-    personalMemoryPlatform: { id: 'p1', title: 'Platform', goal: '', components: [], contexts: [], status: '' },
-    hydroPortfolio: {
-      id: 'h1', title: 'Hydro', coreIdea: '',
-      businessModel: {
-        revenueStreams: [],
-        founderCompensation: { cashInvestment: 1000, profitShareNet: 10, profitShareDuration: '', roles: [] },
-        capitalStructureExample: { singleSiteCapacityKW: 0, capexCHF: 0, debtToEquityRatio: '', targetPaybackYearsPortfolio: 0, targetIRR: { min: 0, max: 0 } }
-      },
-      status: ''
-    },
-    jouleCrypto: { id: 'j1', concept: '', designPrinciples: [], status: '' },
-  },
-  learningAndRoadmap: {
-    currentLearningFocus: [],
-    futureLearningIdeas: [],
-    certificationsTargeted: [],
-  },
-  personalityModel: {
-    selfDescription: [],
-    decisionStyle: '',
-    socialEnergy: '',
-  },
-};
-
 test('isClusterVisible - WORK context', () => {
   assert.strictEqual(isClusterVisible('expertise', 'WORK'), true);
   assert.strictEqual(isClusterVisible('timeline', 'WORK'), true);
@@ -123,23 +46,24 @@ const mockParisData: ParisData = {
     fullName: "John Doe",
     preferredName: "John",
     dateOfBirth: "1990-01-01",
-    placeOfBirth: "Paris, France",
-    nationality: "French",
-    currentLocation: "New York, USA",
+    gender: "Male",
+    placeOfBirth: { city: "Paris", country: "France" },
+    nationality: { mother: "French", father: "French" },
+    currentLocation: { city: "New York", canton: "", country: "USA", sinceYear: 2020 },
     primaryLanguages: ["native English", "fluent French", "basic Spanish"],
     learningLanguages: ["Japanese"],
   },
   lifeTimeline: [
-    { period: "2015-2018", location: "Cameroon", event: "Work", category: "work" },
-    { period: "2018-present", location: "United States", event: "Study", category: "education" },
-    { period: "2020-2022", location: "Switzerland", event: "Travel", category: "life" },
-    { period: "2023", location: "Japan", event: "Vacation", category: "life" },
+    { period: "2015-2018", location: "Cameroon", summary: "Work" },
+    { period: "2018-present", location: "United States", summary: "Study" },
+    { period: "2020-2022", location: "Switzerland", summary: "Travel" },
+    { period: "2023", location: "Japan", summary: "Vacation" },
   ],
   education: [
-    { institution: "University X", degree: "BS", field: "CS", startYear: 2008, endYear: 2012, description: "Desc" }
+    { institution: "University X", level: "BS", field: "CS", durationYears: 4, country: "USA", status: "graduated", notes: "Desc" }
   ],
   workExperience: [
-    { title: "Engineer", organization: "Tech Corp", location: "NY", industry: "Tech", startYear: 2012, endYear: 2020, description: "Desc" }
+    { title: "Engineer", organization: "Tech Corp", location: "NY", industry: "Tech", startApproxYear: 2012, endApproxYear: 2020, responsibilities: ["Desc"], skillsUsed: [] }
   ],
   skills: {
     domains: ["Engineering", "Product", "Design", "Marketing"],
@@ -150,7 +74,7 @@ const mockParisData: ParisData = {
     coreInterests: ["renewable energy", "algorithmic trading", "scalable systems", "Japanese culture", "minimalism", "health optimization", "travel", "music production"],
     travel: { countriesVisitedCount: 30, notes: "Love exploring" },
     values: ["curiosity", "simplicity", "health first", "honesty"],
-    lifestylePreferences: ["early bird", "vegetarian"]
+    lifestylePreferences: { aesthetic: ["minimalist"], social: ["early bird", "vegetarian"] }
   },
   healthAndPerformance: {
     goals: ["run a marathon"],
@@ -187,7 +111,7 @@ test('getFilteredData - WORK context', () => {
 
   assert.deepStrictEqual(result.profile, {
     preferredName: "John",
-    currentLocation: "New York, USA",
+    currentLocation: { city: "New York", canton: "", country: "USA", sinceYear: 2020 },
     primaryLanguages: ["native English", "fluent French", "basic Spanish"],
   });
 
@@ -220,9 +144,10 @@ test('getFilteredData - DATING context', () => {
     fullName: "John Doe",
     preferredName: "John",
     dateOfBirth: "1990-01-01",
-    placeOfBirth: "Paris, France",
-    nationality: "French",
-    currentLocation: "New York, USA",
+    gender: "Male",
+    placeOfBirth: { city: "Paris", country: "France" },
+    nationality: { mother: "French", father: "French" },
+    currentLocation: { city: "New York", canton: "", country: "USA", sinceYear: 2020 },
     primaryLanguages: ["native English", "fluent French", "basic Spanish"],
     learningLanguages: ["Japanese"],
   });
@@ -249,7 +174,7 @@ test('getFilteredData - PUBLIC context', () => {
 
   assert.deepStrictEqual(result.profile, {
     preferredName: "John",
-    currentLocation: "New York, USA",
+    currentLocation: { city: "New York", canton: "", country: "USA", sinceYear: 2020 },
     primaryLanguages: ["native English", "fluent French"],
   });
 

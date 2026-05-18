@@ -63,6 +63,7 @@ function filterDatingContext(data: ParisData): FilteredData {
       fullName: data.profile.fullName,
       preferredName: data.profile.preferredName,
       dateOfBirth: data.profile.dateOfBirth,
+      gender: data.profile.gender,
       placeOfBirth: data.profile.placeOfBirth,
       nationality: data.profile.nationality,
       currentLocation: data.profile.currentLocation,
