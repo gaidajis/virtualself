@@ -154,6 +154,14 @@ export function ConsciousnessViewer({ data }: ConsciousnessViewerProps) {
     setEditJsonStr('');
   }, [selectedNode?.id]);
 
+  const nodeMap = useMemo(() => {
+    const map = new Map<string, NodeData>();
+    for (const node of nodes) {
+      map.set(node.id, node);
+    }
+    return map;
+  }, [nodes]);
+
   // Handle pan drag
   const handleMouseDown = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('.node-element')) return;
