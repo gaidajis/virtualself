@@ -38,10 +38,11 @@ export function VoiceRecorder() {
         const dataArray = new Uint8Array(analyserRef.current!.frequencyBinCount);
         analyserRef.current!.getByteFrequencyData(dataArray);
         
-        const levels = Array(20).fill(0).map((_, i) => {
+        const levels = new Array(20);
+        for (let i = 0; i < 20; i++) {
           const index = Math.floor((i / 20) * dataArray.length);
-          return Math.max(5, (dataArray[index] / 255) * 50);
-        });
+          levels[i] = Math.max(5, (dataArray[index] / 255) * 50);
+        }
         
         setAudioLevels(levels);
         animationFrameRef.current = requestAnimationFrame(updateLevels);
