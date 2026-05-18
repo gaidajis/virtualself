@@ -25,7 +25,8 @@ function App() {
       try {
         const storedData = localStorage.getItem('virtualMeData');
         if (storedData) {
-          setRawData(JSON.parse(storedData));
+          const parsedData = await new Response(storedData).json();
+          setRawData(parsedData);
         } else {
           const basePath = import.meta.env.BASE_URL || '/';
           const response = await fetch(`${basePath}paris.json`);
