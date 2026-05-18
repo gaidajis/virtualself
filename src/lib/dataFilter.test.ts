@@ -117,131 +117,189 @@ test('isClusterVisible - default/other contexts', () => {
   assert.strictEqual(isClusterVisible('any', 'UNKNOWN' as any), true);
 });
 
+const mockParisData: ParisData = {
+  userId: "123",
+  profile: {
+    fullName: "John Doe",
+    preferredName: "John",
+    dateOfBirth: "1990-01-01",
+    placeOfBirth: "Paris, France",
+    nationality: "French",
+    currentLocation: "New York, USA",
+    primaryLanguages: ["native English", "fluent French", "basic Spanish"],
+    learningLanguages: ["Japanese"],
+  },
+  lifeTimeline: [
+    { period: "2015-2018", location: "Cameroon", event: "Work", category: "work" },
+    { period: "2018-present", location: "United States", event: "Study", category: "education" },
+    { period: "2020-2022", location: "Switzerland", event: "Travel", category: "life" },
+    { period: "2023", location: "Japan", event: "Vacation", category: "life" },
+  ],
+  education: [
+    { institution: "University X", degree: "BS", field: "CS", startYear: 2008, endYear: 2012, description: "Desc" }
+  ],
+  workExperience: [
+    { title: "Engineer", organization: "Tech Corp", location: "NY", industry: "Tech", startYear: 2012, endYear: 2020, description: "Desc" }
+  ],
+  skills: {
+    domains: ["Engineering", "Product", "Design", "Marketing"],
+    technical: ["React", "Node", "TypeScript"],
+    softSkills: ["systems thinking", "strategic planning", "cross-cultural communication", "public speaking"]
+  },
+  interestsAndValues: {
+    coreInterests: ["renewable energy", "algorithmic trading", "scalable systems", "Japanese culture", "minimalism", "health optimization", "travel", "music production"],
+    travel: { countriesVisitedCount: 30, notes: "Love exploring" },
+    values: ["curiosity", "simplicity", "health first", "honesty"],
+    lifestylePreferences: ["early bird", "vegetarian"]
+  },
+  healthAndPerformance: {
+    goals: ["run a marathon"],
+    habits: ["daily meditation"],
+  } as any,
+  relationships: {
+    maritalStatus: "Single",
+  } as any,
+  projects: {
+    hydroPortfolio: {
+      name: "Hydro",
+      businessModel: {
+        revenue: 1000,
+        founderCompensation: 100,
+      }
+    },
+    jouleCrypto: {
+      name: "Joule"
+    }
+  } as any,
+  financeAndWorkstyle: {
+    currentRole: "Lead",
+    riskAppetite: "Moderate",
+  } as any,
+  learningAndRoadmap: {
+    currentLearningFocus: [],
+    futureLearningIdeas: [],
+    certificationsTargeted: [],
+  }
+};
+
 test('getFilteredData - WORK context', () => {
-  const result = getFilteredData(mockData, 'WORK');
+  const result = getFilteredData(mockParisData, 'WORK');
 
   assert.deepStrictEqual(result.profile, {
-    preferredName: 'Johnny',
-    currentLocation: mockData.profile.currentLocation,
-    primaryLanguages: mockData.profile.primaryLanguages,
+    preferredName: "John",
+    currentLocation: "New York, USA",
+    primaryLanguages: ["native English", "fluent French", "basic Spanish"],
   });
 
-  assert.strictEqual(result.timeline.length, 3); // Cameroon, US, Switzerland matches
-  assert.strictEqual(result.timeline[0].location, 'Cameroon');
+  assert.strictEqual(result.timeline.length, 3);
+  assert.strictEqual(result.timeline[0].location, "Cameroon");
+  assert.strictEqual(result.timeline[1].location, "United States");
+  assert.strictEqual(result.timeline[2].location, "Switzerland");
 
-  assert.deepStrictEqual(result.education, mockData.education);
-  assert.deepStrictEqual(result.workExperience, mockData.workExperience);
+  assert.strictEqual(result.education, mockParisData.education);
+  assert.strictEqual(result.workExperience, mockParisData.workExperience);
 
-  assert.deepStrictEqual(result.skills.domains, mockData.skills.domains);
-  assert.deepStrictEqual(result.skills.technical, mockData.skills.technical);
-  assert.strictEqual(result.skills.softSkills?.length, 3); // systems, strategic, cross-cultural
+  assert.strictEqual(result.skills.domains, mockParisData.skills.domains);
+  assert.strictEqual(result.skills.technical, mockParisData.skills.technical);
+  assert.deepStrictEqual(result.skills.softSkills, ["systems thinking", "strategic planning", "cross-cultural communication"]);
 
-  assert.strictEqual(result.interests.coreInterests?.length, 3); // renewable energy, algo trading, scalable architecture
-
+  assert.deepStrictEqual(result.interests.coreInterests, ["renewable energy", "algorithmic trading", "scalable systems"]);
   assert.deepStrictEqual(result.health, {});
+  assert.deepStrictEqual(result.relationships, { maritalStatus: "Single" });
 
-  assert.deepStrictEqual(result.relationships, { maritalStatus: 'Single' });
+  assert.strictEqual(result.projects.hydroPortfolio, mockParisData.projects.hydroPortfolio);
+  assert.strictEqual(result.projects.jouleCrypto, mockParisData.projects.jouleCrypto);
 
-  assert.deepStrictEqual(result.projects.hydroPortfolio, mockData.projects.hydroPortfolio);
-  assert.deepStrictEqual(result.projects.jouleCrypto, mockData.projects.jouleCrypto);
-
-  assert.deepStrictEqual(result.finance, {
-    currentRole: 'Senior Engineer',
-    riskAppetite: 'Moderate',
-  });
+  assert.deepStrictEqual(result.finance, { currentRole: "Lead", riskAppetite: "Moderate" });
 });
 
 test('getFilteredData - DATING context', () => {
-  const result = getFilteredData(mockData, 'DATING');
+  const result = getFilteredData(mockParisData, 'DATING');
 
   assert.deepStrictEqual(result.profile, {
-    fullName: 'John Doe',
-    preferredName: 'Johnny',
-    dateOfBirth: '1990-01-01',
-    placeOfBirth: { city: 'Paris', country: 'France' },
-    nationality: { mother: 'French', father: 'French' },
-    currentLocation: mockData.profile.currentLocation,
-    primaryLanguages: mockData.profile.primaryLanguages,
-    learningLanguages: ['German'],
+    fullName: "John Doe",
+    preferredName: "John",
+    dateOfBirth: "1990-01-01",
+    placeOfBirth: "Paris, France",
+    nationality: "French",
+    currentLocation: "New York, USA",
+    primaryLanguages: ["native English", "fluent French", "basic Spanish"],
+    learningLanguages: ["Japanese"],
   });
 
-  assert.deepStrictEqual(result.timeline, mockData.lifeTimeline);
+  assert.strictEqual(result.timeline, mockParisData.lifeTimeline);
   assert.deepStrictEqual(result.education, []);
-
-  assert.deepStrictEqual(result.workExperience, [
-    { title: 'Engineer', organization: 'TechCorp', location: 'Geneva' }
-  ]);
+  assert.deepStrictEqual(result.workExperience, [{ title: "Engineer", organization: "Tech Corp", location: "NY" }]);
 
   assert.deepStrictEqual(result.skills, {});
 
-  assert.strictEqual(result.interests.coreInterests?.length, 5); // Japanese culture, minimalism, health, travel, music
-  assert.deepStrictEqual(result.interests.travel, mockData.interestsAndValues.travel);
-  assert.strictEqual(result.interests.values?.length, 3); // curiosity, simplicity, healthspan
-  assert.deepStrictEqual(result.interests.lifestylePreferences, mockData.interestsAndValues.lifestylePreferences);
+  assert.deepStrictEqual(result.interests.coreInterests, ["Japanese culture", "minimalism", "health optimization", "travel", "music production"]);
+  assert.strictEqual(result.interests.travel, mockParisData.interestsAndValues.travel);
+  assert.deepStrictEqual(result.interests.values, ["curiosity", "simplicity", "health first"]);
+  assert.strictEqual(result.interests.lifestylePreferences, mockParisData.interestsAndValues.lifestylePreferences);
 
-  assert.deepStrictEqual(result.health, mockData.healthAndPerformance);
-  assert.deepStrictEqual(result.relationships, { maritalStatus: 'Single' });
+  assert.deepStrictEqual(result.health, mockParisData.healthAndPerformance);
+  assert.deepStrictEqual(result.relationships, { maritalStatus: "Single" });
   assert.deepStrictEqual(result.projects, {});
+  assert.strictEqual(result.finance, undefined);
 });
 
 test('getFilteredData - PUBLIC context', () => {
-  const result = getFilteredData(mockData, 'PUBLIC');
+  const result = getFilteredData(mockParisData, 'PUBLIC');
 
   assert.deepStrictEqual(result.profile, {
-    preferredName: 'Johnny',
-    currentLocation: mockData.profile.currentLocation,
-    primaryLanguages: ['French (native)', 'English (fluent)'], // Basic Spanish should be filtered out
+    preferredName: "John",
+    currentLocation: "New York, USA",
+    primaryLanguages: ["native English", "fluent French"],
   });
 
-  assert.strictEqual(result.timeline.length, 2); // '2015-2018' and '2018-present' match '2018' or 'present'
-  assert.strictEqual(result.timeline[0].period, '2015-2018');
-  assert.strictEqual(result.timeline[1].period, '2018-present');
+  assert.strictEqual(result.timeline.length, 2);
+  assert.strictEqual(result.timeline[0].period, "2015-2018");
+  assert.strictEqual(result.timeline[1].period, "2018-present");
 
   assert.deepStrictEqual(result.education, []);
+  assert.deepStrictEqual(result.workExperience, [{ title: "Engineer", organization: "Tech Corp", industry: "Tech" }]);
 
-  assert.deepStrictEqual(result.workExperience, [
-    { title: 'Engineer', organization: 'TechCorp', industry: 'Technology' }
-  ]);
+  assert.deepStrictEqual(result.skills, { domains: ["Engineering", "Product", "Design"] });
 
-  assert.deepStrictEqual(result.skills, {
-    domains: ['Engineering', 'Management', 'Design'], // First 3 only
-  });
-
-  assert.strictEqual(result.interests.coreInterests?.length, 4); // First 4 only
-  assert.deepStrictEqual(result.interests.travel, {
-    countriesVisitedCount: 20,
-    notes: 'Love traveling',
-  });
+  assert.deepStrictEqual(result.interests.coreInterests, ["renewable energy", "algorithmic trading", "scalable systems", "Japanese culture"]);
+  assert.deepStrictEqual(result.interests.travel, mockParisData.interestsAndValues.travel);
 
   assert.deepStrictEqual(result.health, {});
   assert.deepStrictEqual(result.relationships, {});
 
-  // Checking that founderCompensation is undefined
-  assert.strictEqual(result.projects.hydroPortfolio?.businessModel?.founderCompensation, undefined);
-  assert.strictEqual(result.projects.hydroPortfolio?.title, 'Hydro');
+  assert.deepStrictEqual(result.projects, {
+    hydroPortfolio: {
+      name: "Hydro",
+      businessModel: {
+        revenue: 1000,
+        founderCompensation: undefined,
+      }
+    }
+  });
+
+  assert.strictEqual(result.finance, undefined);
 });
 
 test('getFilteredData - PRIVATE context', () => {
-  const result = getFilteredData(mockData, 'PRIVATE');
+  const result = getFilteredData(mockParisData, 'PRIVATE');
 
-  // Private context returns everything
-  assert.deepStrictEqual(result.profile, mockData.profile);
-  assert.deepStrictEqual(result.timeline, mockData.lifeTimeline);
-  assert.deepStrictEqual(result.education, mockData.education);
-  assert.deepStrictEqual(result.workExperience, mockData.workExperience);
-  assert.deepStrictEqual(result.skills, mockData.skills);
-  assert.deepStrictEqual(result.interests, mockData.interestsAndValues);
-  assert.deepStrictEqual(result.health, mockData.healthAndPerformance);
-  assert.deepStrictEqual(result.relationships, mockData.relationships);
-  assert.deepStrictEqual(result.projects, mockData.projects);
-  assert.deepStrictEqual(result.finance, mockData.financeAndWorkstyle);
+  assert.strictEqual(result.profile, mockParisData.profile);
+  assert.strictEqual(result.timeline, mockParisData.lifeTimeline);
+  assert.strictEqual(result.education, mockParisData.education);
+  assert.strictEqual(result.workExperience, mockParisData.workExperience);
+  assert.strictEqual(result.skills, mockParisData.skills);
+  assert.strictEqual(result.interests, mockParisData.interestsAndValues);
+  assert.strictEqual(result.health, mockParisData.healthAndPerformance);
+  assert.strictEqual(result.relationships, mockParisData.relationships);
+  assert.strictEqual(result.projects, mockParisData.projects);
+  assert.strictEqual(result.finance, mockParisData.financeAndWorkstyle);
 });
 
-test('getFilteredData - default/unknown context', () => {
-  // @ts-ignore - testing default case
-  const result = getFilteredData(mockData, 'UNKNOWN' as any);
-  const publicResult = getFilteredData(mockData, 'PUBLIC');
+test('getFilteredData - default context', () => {
+  // @ts-ignore
+  const result = getFilteredData(mockParisData, 'UNKNOWN');
+  const expected = getFilteredData(mockParisData, 'PUBLIC');
 
-  // Should default to PUBLIC filtering
-  assert.deepStrictEqual(result, publicResult);
+  assert.deepStrictEqual(result, expected);
 });
